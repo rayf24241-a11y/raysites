@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apex Auto Detailing — Ceramic Coating &amp; Paint Correction</title>
+<meta name="description" content="Paint correction, ceramic coating and full details. Mobile service across the metro. Booked by appointment only.">
+<meta name="theme-color" content="#07080b">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#07080b; --ink:#f6f7fa; --dim:#8d94a6; --red:#e03131; --chrome:#c8d0dd;
+    --line:rgba(200,208,221,.13); --glass:rgba(14,16,22,.6); --max:1120px;
+  }
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);
+    font:400 16px/1.65 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  a{color:inherit}
+
+  #gl{position:absolute;top:0;left:0;width:100%;height:100%;display:block;z-index:0;
+    background:radial-gradient(120% 80% at 70% 20%,#1a1e28 0%,#0b0d12 55%,#06070a 100%)}
+  #hero{position:relative;min-height:clamp(600px,94svh,1000px);display:flex;flex-direction:column;overflow:hidden}
+  #hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:linear-gradient(180deg,rgba(7,8,11,.72) 0%,rgba(7,8,11,.30) 32%,rgba(7,8,11,.55) 72%,var(--bg) 100%)}
+  .hero-in{position:relative;z-index:2;flex:1;display:flex;flex-direction:column}
+
+  nav{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 0}
+  .mark{display:flex;align-items:center;gap:11px}
+  .mark .a{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;
+    background:linear-gradient(140deg,var(--red),#8f1d1d);font-weight:900;font-size:17px;letter-spacing:-.04em}
+  .mark b{font-size:16px;font-weight:800;letter-spacing:.02em;line-height:1.1;display:block}
+  .mark span{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim)}
+  .navl{display:none;gap:28px;font-size:13.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+  .navl a{text-decoration:none;color:var(--dim);transition:.2s}
+  .navl a:hover{color:var(--ink)}
+  @media(min-width:900px){.navl{display:flex}}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;text-decoration:none;
+    font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;
+    padding:14px 24px;border-radius:8px;transition:.22s;border:1.5px solid transparent;cursor:pointer;font-family:inherit}
+  .btn.solid{background:var(--red);color:#fff;box-shadow:0 10px 34px -12px rgba(224,49,49,.9)}
+  .btn.solid:hover{background:#ee4444;transform:translateY(-2px)}
+  .btn.wire{border-color:var(--line);color:var(--ink);backdrop-filter:blur(12px);background:var(--glass)}
+  .btn.wire:hover{border-color:var(--chrome);}
+
+  .hero-body{flex:1;display:flex;align-items:center;padding:40px 0 70px}
+  .tag{display:inline-flex;align-items:center;gap:9px;font-size:11.5px;font-weight:800;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--chrome);
+    border:1px solid var(--line);background:var(--glass);padding:8px 15px;border-radius:999px;backdrop-filter:blur(12px)}
+  h1{font-size:clamp(44px,9.6vw,108px);line-height:.92;letter-spacing:-.045em;font-weight:900;margin:22px 0 0;max-width:12ch}
+  h1 em{font-style:normal;background:linear-gradient(100deg,#fff 0%,var(--chrome) 40%,#6f7a8d 62%,#fff 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{margin-top:22px;color:var(--dim);font-size:clamp(16.5px,2.1vw,20px);max-width:46ch}
+  .acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+  .strip{display:flex;flex-wrap:wrap;gap:30px;margin-top:44px;padding-top:26px;border-top:1px solid var(--line)}
+  .strip div b{display:block;font-size:clamp(22px,3.4vw,30px);font-weight:900;letter-spacing:-.03em}
+  .strip div span{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+
+  section{padding:84px 0;border-top:1px solid var(--line)}
+  .kick{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--red);font-weight:800}
+  h2{font-size:clamp(30px,5.4vw,50px);line-height:1.04;letter-spacing:-.035em;font-weight:900;margin-top:13px}
+  .sub{color:var(--dim);margin-top:15px;font-size:17px;max-width:56ch}
+
+  /* before / after */
+  .ba{margin-top:42px;border:1px solid var(--line);border-radius:18px;overflow:hidden;position:relative;
+    aspect-ratio:16/9;cursor:ew-resize;user-select:none;touch-action:none;background:#0b0d12}
+  .ba .pane{position:absolute;inset:0}
+  .ba .after{clip-path:inset(0 0 0 var(--split,50%))}
+  .ba svg{width:100%;height:100%;display:block}
+  .ba .divider{position:absolute;top:0;bottom:0;left:var(--split,50%);width:2px;background:#fff;z-index:3;
+    box-shadow:0 0 22px rgba(255,255,255,.7)}
+  .ba .knob{position:absolute;top:50%;left:var(--split,50%);transform:translate(-50%,-50%);z-index:4;
+    width:46px;height:46px;border-radius:50%;background:#fff;display:grid;place-items:center;
+    box-shadow:0 6px 26px rgba(0,0,0,.6);color:#07080b;font-weight:900;font-size:15px}
+  .ba .lab{position:absolute;bottom:14px;z-index:3;font-size:11px;font-weight:800;letter-spacing:.16em;
+    text-transform:uppercase;padding:7px 13px;border-radius:999px;background:rgba(7,8,11,.8);backdrop-filter:blur(8px)}
+  .ba .lab.l{left:14px;color:var(--dim)} .ba .lab.r{right:14px;color:#fff}
+
+  .grid{display:grid;gap:16px;margin-top:44px}
+  @media(min-width:820px){.g3{grid-template-columns:repeat(3,1fr)}}
+  .card{border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(16px);
+    border-radius:16px;padding:28px;transition:.28s;position:relative;overflow:hidden}
+  .card:hover{border-color:rgba(200,208,221,.36);transform:translateY(-4px)}
+  .card.feat{border-color:rgba(224,49,49,.5)}
+  .card .pill{position:absolute;top:16px;right:16px;font-size:10px;font-weight:800;letter-spacing:.14em;
+    text-transform:uppercase;color:#fff;background:var(--red);padding:5px 10px;border-radius:999px}
+  .card h3{font-size:21px;font-weight:800;letter-spacing:-.015em}
+  .card .price{font-size:34px;font-weight:900;letter-spacing:-.04em;margin-top:12px;
+    background:linear-gradient(100deg,#fff,var(--chrome) 60%,#7f8899);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .card .price small{font-size:13px;font-weight:600;color:var(--dim);letter-spacing:0;-webkit-text-fill-color:var(--dim)}
+  .card ul{list-style:none;margin-top:18px;display:grid;gap:10px}
+  .card li{color:var(--dim);font-size:14.5px;padding-left:22px;position:relative}
+  .card li::before{content:'';position:absolute;left:0;top:7px;width:11px;height:6px;
+    border-left:2px solid var(--red);border-bottom:2px solid var(--red);transform:rotate(-45deg)}
+
+  .steps{display:grid;gap:1px;margin-top:44px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  @media(min-width:820px){.steps{grid-template-columns:repeat(4,1fr)}}
+  .steps div{background:#090b0f;padding:26px 22px}
+  .steps b{font-size:11.5px;letter-spacing:.16em;color:var(--red);font-weight:800}
+  .steps h3{font-size:17px;font-weight:800;margin-top:9px}
+  .steps p{color:var(--dim);font-size:14.5px;margin-top:7px}
+
+  .book{text-align:center;padding:96px 0}
+  form{max-width:470px;margin:32px auto 0;display:grid;gap:13px;text-align:left}
+  label{font-size:11.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);font-weight:800}
+  input,select{width:100%;padding:14px 15px;border-radius:8px;border:1px solid var(--line);
+    background:rgba(200,208,221,.05);color:var(--ink);font:inherit;font-size:15.5px;margin-top:7px}
+  input:focus,select:focus{outline:none;border-color:var(--red)}
+  select option{background:#0b0d12;color:var(--ink)}
+  .ok{display:none;border:1px solid rgba(224,49,49,.5);background:rgba(224,49,49,.09);
+    border-radius:12px;padding:24px;margin-top:22px}
+  .ok.show{display:block}
+  .ok b{font-size:19px;font-weight:800}
+  .ok p{color:var(--dim);margin-top:7px;font-size:15px}
+
+  footer{border-top:1px solid var(--line);padding:32px 0 46px;color:var(--dim);font-size:13.5px;
+    display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between}
+  .demo{position:fixed;left:14px;bottom:14px;z-index:100;background:var(--red);color:#fff;
+    font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    padding:9px 14px;border-radius:999px;text-decoration:none;box-shadow:0 12px 30px -10px rgba(0,0,0,.9)}
+  .rv{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+  .rv.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<div id="hero">
+  <canvas id="gl"></canvas>
+  <div class="hero-in">
+    <div class="wrap">
+      <nav>
+        <div class="mark">
+          <div class="a">A</div>
+          <div><b>APEX</b><span>Auto Detailing</span></div>
+        </div>
+        <div class="navl"><a href="#work">The work</a><a href="#packages">Packages</a><a href="#how">Process</a></div>
+        <a class="btn solid" href="#book">Book now</a>
+      </nav>
+    </div>
+
+    <div class="wrap hero-body">
+      <div>
+        <span class="tag">Ceramic coating · Paint correction · Mobile</span>
+        <h1>Make it look <em>better than new.</em></h1>
+        <p class="lede">Multi-stage paint correction and 9H ceramic coating, done in your driveway. Booked by appointment, one car a day, no rushing.</p>
+        <div class="acts">
+          <a class="btn solid" href="#book">Book your car in</a>
+          <a class="btn wire" href="#work">See before &amp; after</a>
+        </div>
+        <div class="strip">
+          <div><b>1 car</b><span>Per day, no exceptions</span></div>
+          <div><b>5 yr</b><span>Coating warranty</span></div>
+          <div><b>4.9★</b><span>317 reviews</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section id="work" class="rv">
+    <div class="kick">Before &amp; after</div>
+    <h2>Drag it. That's the same panel.</h2>
+    <p class="sub">Swirl marks and oxidation on the left, three-stage correction and coating on the right. No filler glaze — this is cut and polished paint.</p>
+
+    <div class="ba" id="ba" style="--split:50%">
+      <div class="pane before">
+        <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <linearGradient id="dull" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#2b3038"/><stop offset=".5" stop-color="#3a4049"/><stop offset="1" stop-color="#23272e"/>
+            </linearGradient>
+            <radialGradient id="haze" cx=".5" cy=".4" r=".7">
+              <stop offset="0" stop-color="#6a707c" stop-opacity=".5"/><stop offset="1" stop-color="#6a707c" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect width="800" height="450" fill="url(#dull)"/>
+          <rect width="800" height="450" fill="url(#haze)"/>
+          <g stroke="#8a919d" stroke-width="1" opacity=".55" fill="none">
+            <circle cx="250" cy="180" r="52"/><circle cx="250" cy="180" r="78"/><circle cx="250" cy="180" r="104"/>
+            <circle cx="560" cy="280" r="44"/><circle cx="560" cy="280" r="70"/><circle cx="560" cy="280" r="96"/>
+            <circle cx="410" cy="90" r="60"/><circle cx="120" cy="360" r="58"/>
+          </g>
+          <g stroke="#9aa1ad" stroke-width=".8" opacity=".4">
+            <path d="M40 60l90 26M180 300l86 20M600 90l84 22M320 400l88 18M660 340l82 20"/>
+          </g>
+        </svg>
+      </div>
+      <div class="pane after">
+        <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <linearGradient id="deep" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#0a1830"/><stop offset=".45" stop-color="#123a6b"/><stop offset="1" stop-color="#050a16"/>
+            </linearGradient>
+            <linearGradient id="box" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <rect width="800" height="450" fill="url(#deep)"/>
+          <ellipse cx="300" cy="-40" rx="360" ry="170" fill="url(#box)" opacity=".5"/>
+          <ellipse cx="640" cy="470" rx="300" ry="130" fill="#69a6ff" opacity=".22"/>
+          <path d="M0 250c150-70 320-30 460-90s240-40 340-90v-90H0Z" fill="#fff" opacity=".07"/>
+          <path d="M60 40h180l-40 60H20Z" fill="#fff" opacity=".5"/>
+          <path d="M300 40h90l-40 60h-90Z" fill="#fff" opacity=".35"/>
+        </svg>
+      </div>
+      <div class="divider"></div>
+      <div class="knob">⇄</div>
+      <span class="lab l">Before</span><span class="lab r">After</span>
+    </div>
+  </section>
+
+  <section id="packages" class="rv">
+    <div class="kick">Packages</div>
+    <h2>Three options. Nothing hidden.</h2>
+    <p class="sub">Prices are for sedans. Trucks and SUVs add $60. Everything includes pickup of nothing — I come to you.</p>
+    <div class="grid g3">
+      <div class="card">
+        <h3>Maintenance</h3>
+        <div class="price">$120<small> / visit</small></div>
+        <ul><li>Two-bucket hand wash</li><li>Wheels, tyres and arches</li><li>Bug and tar removal</li><li>Spray sealant, 3 month</li><li>Interior vacuum and wipe</li></ul>
+      </div>
+      <div class="card feat">
+        <span class="pill">Most booked</span>
+        <h3>Correction</h3>
+        <div class="price">$450<small> / one-off</small></div>
+        <ul><li>Everything in Maintenance</li><li>Clay bar decontamination</li><li>Two-stage machine polish</li><li>Removes 80–90% of swirls</li><li>6 month sealant</li><li>Full day, one car</li></ul>
+      </div>
+      <div class="card">
+        <h3>Ceramic</h3>
+        <div class="price">$1,150<small> / 5 year</small></div>
+        <ul><li>Everything in Correction</li><li>Three-stage paint correction</li><li>9H ceramic coating</li><li>Glass and wheel coating</li><li>5 year written warranty</li><li>Annual inspection included</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="rv">
+    <div class="kick">How it works</div>
+    <h2>You don't go anywhere.</h2>
+    <div class="steps">
+      <div><b>01</b><h3>Send photos</h3><p>Four corners of the car in daylight. I quote from those, firm.</p></div>
+      <div><b>02</b><h3>Pick a day</h3><p>One car a day. Usually within the week, weekends book out first.</p></div>
+      <div><b>03</b><h3>I come to you</h3><p>Water and power on board. Driveway or car park, doesn't matter.</p></div>
+      <div><b>04</b><h3>Walk around</h3><p>We look at it together in daylight before I take payment.</p></div>
+    </div>
+  </section>
+
+  <section class="book rv" id="book">
+    <div class="kick">Book</div>
+    <h2>Get a firm quote today.</h2>
+    <p class="sub" style="margin-inline:auto">Send the car and what you're after. I'll come back with a fixed price, not a range.</p>
+    <form id="f">
+      <div><label for="nm">Name</label><input id="nm" required placeholder="Sam O."></div>
+      <div><label for="ph">Phone</label><input id="ph" type="tel" required placeholder="(555) 010-0184"></div>
+      <div><label for="cr">Car</label><input id="cr" required placeholder="2019 Audi A4, black"></div>
+      <div><label for="pk">Package</label>
+        <select id="pk"><option>Maintenance — $120</option><option>Correction — $450</option><option>Ceramic — $1,150</option><option>Not sure, advise me</option></select>
+      </div>
+      <button class="btn solid" type="submit" style="margin-top:10px">Request my quote</button>
+    </form>
+    <div class="ok" id="ok"><b>Got it — quote coming within the day.</b><p>If it's urgent, call and I'll pick up between jobs.</p></div>
+  </section>
+
+</div>
+
+<div class="wrap">
+  <footer>
+    <span>© <span id="yr"></span> Apex Auto Detailing · Mobile across the metro</span>
+    <span>By appointment only · (555) 010-0184</span>
+  </footer>
+</div>
+
+<a class="demo" href="../index.html">← Demo site · back to portfolio</a>
+
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+document.getElementById('f').addEventListener('submit', function (e) {
+  e.preventDefault(); this.style.display = 'none';
+  document.getElementById('ok').classList.add('show');
+});
+
+/* before / after slider — pointer + keyboard */
+(function () {
+  var ba = document.getElementById('ba'), drag = false;
+  function set(clientX) {
+    var r = ba.getBoundingClientRect();
+    var pct = Math.max(0, Math.min(100, ((clientX - r.left) / r.width) * 100));
+    ba.style.setProperty('--split', pct + '%');
+  }
+  ba.addEventListener('pointerdown', function (e) { drag = true; ba.setPointerCapture(e.pointerId); set(e.clientX); });
+  ba.addEventListener('pointermove', function (e) { if (drag) set(e.clientX); });
+  ba.addEventListener('pointerup', function () { drag = false; });
+  ba.addEventListener('pointercancel', function () { drag = false; });
+})();
+
+var io = new IntersectionObserver(function (es) {
+  es.forEach(function (e) { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: .1 });
+document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+
+/* ============================================================
+   Raymarched clearcoat paint sphere. Studio softboxes reflected
+   in a deforming metallic surface — pure WebGL, no libraries.
+   ============================================================ */
+(function () {
+  var cv = document.getElementById('gl');
+  var gl = null, ready = false, uRes, uTime, uMouse;
+
+  var VS = 'attribute vec2 p; void main(){ gl_Position = vec4(p,0.0,1.0); }';
+
+  var FS = [
+  'precision highp float;',
+  'uniform vec2 uRes; uniform float uTime; uniform vec2 uMouse;',
+  'mat2 rot(float a){ float c=cos(a), s=sin(a); return mat2(c,-s,s,c); }',
+  // deforming sphere
+  'float map(vec3 p){',
+  '  vec3 q = p;',
+  '  q.xz *= rot(uTime*0.22);',
+  '  q.yz *= rot(uTime*0.15);',
+  '  float d = length(q) - 1.18;',
+  '  d += 0.055*sin(q.x*3.4+uTime*0.7)*sin(q.y*3.1)*sin(q.z*3.6+uTime*0.4);',
+  '  d += 0.020*sin(q.x*9.0)*sin(q.y*8.4+uTime)*sin(q.z*9.2);',
+  '  return d*0.75;',
+  '}',
+  'vec3 nrm(vec3 p){ vec2 e=vec2(0.0018,0.0);',
+  '  return normalize(vec3(map(p+e.xyy)-map(p-e.xyy), map(p+e.yxy)-map(p-e.yxy), map(p+e.yyx)-map(p-e.yyx))); }',
+  // studio environment: dark room, bright overhead softboxes
+  'vec3 env(vec3 rd){',
+  '  vec3 c = mix(vec3(0.012,0.014,0.020), vec3(0.10,0.12,0.16), smoothstep(-0.7,1.0,rd.y));',
+  '  float bands = smoothstep(0.55,0.95,sin(rd.y*7.0+1.2));',
+  '  c += vec3(1.0,0.99,0.97)*bands*smoothstep(0.0,0.45,rd.y)*1.5;',
+  '  float side = smoothstep(0.86,1.0,abs(rd.x))*smoothstep(-0.35,0.5,rd.y);',
+  '  c += vec3(0.55,0.62,0.80)*side*0.55;',
+  '  c += vec3(0.88,0.18,0.18)*smoothstep(0.55,1.0,-rd.y)*0.30;',   // red floor bounce
+  '  return c;',
+  '}',
+  'void main(){',
+  '  vec2 uv = (gl_FragCoord.xy - 0.5*uRes)/uRes.y;',
+  '  vec3 ro = vec3(0.0,0.0,-3.5);',
+  '  vec3 rd = normalize(vec3(uv + uMouse*0.055, 1.0));',
+  '  float t=0.0; bool hit=false;',
+  '  for(int i=0;i<86;i++){',
+  '    vec3 p = ro + rd*t; float d = map(p);',
+  '    if(d<0.0012){ hit=true; break; }',
+  '    if(t>9.0) break;',
+  '    t += d;',
+  '  }',
+  '  vec3 col;',
+  '  if(hit){',
+  '    vec3 p = ro+rd*t; vec3 n = nrm(p); vec3 r = reflect(rd,n);',
+  '    float fre = pow(1.0 - max(dot(n,-rd),0.0), 4.0);',
+  // deep candy basecoat that shifts with viewing angle
+  '    float ang = dot(n,-rd);',
+  '    vec3 base = mix(vec3(0.015,0.05,0.16), vec3(0.30,0.03,0.05), smoothstep(0.15,0.95,ang));',
+  '    base = mix(base, vec3(0.02,0.10,0.26), 0.45*sin(p.y*2.0+uTime*0.3)+0.45);',
+  '    vec3 refl = env(r);',
+  '    col = base*0.55 + refl*(0.28 + fre*0.95);',
+  '    vec3 lig = normalize(vec3(0.35,0.85,-0.42));',
+  '    col += vec3(1.0)*pow(max(dot(reflect(-lig,n),-rd),0.0), 90.0)*1.4;',   // clearcoat highlight
+  '    col += vec3(1.0,0.35,0.35)*fre*0.30;',
+  '  } else {',
+  '    col = env(rd)*0.85;',
+  '  }',
+  '  col = col/(1.0+col*0.42);',
+  '  col = pow(max(col,0.0), vec3(0.88));',
+  '  col += (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898,78.233)))*43758.5453)-0.5)*0.02;',
+  '  gl_FragColor = vec4(col,1.0);',
+  '}'].join('\n');
+
+  function sh(type, src){
+    var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+    if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)){ console.error(gl.getShaderInfoLog(s)); return null; }
+    return s;
+  }
+  function init(){
+    if (ready) return true;
+    try { gl = cv.getContext('webgl',{antialias:false,alpha:false,powerPreference:'high-performance'})
+             || cv.getContext('experimental-webgl'); } catch(e){ gl = null; }
+    if (!gl) return false;
+    var vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FS);
+    if (!vs || !fs) return false;
+    var pr = gl.createProgram(); gl.attachShader(pr,vs); gl.attachShader(pr,fs); gl.linkProgram(pr);
+    if(!gl.getProgramParameter(pr, gl.LINK_STATUS)){ console.error(gl.getProgramInfoLog(pr)); return false; }
+    gl.useProgram(pr);
+    var b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,b);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+    var l = gl.getAttribLocation(pr,'p'); gl.enableVertexAttribArray(l);
+    gl.vertexAttribPointer(l,2,gl.FLOAT,false,0,0);
+    uRes = gl.getUniformLocation(pr,'uRes'); uTime = gl.getUniformLocation(pr,'uTime');
+    uMouse = gl.getUniformLocation(pr,'uMouse');
+    ready = true; resize(); return true;
+  }
+  function resize(){
+    if(!gl) return;
+    var dpr = Math.min(devicePixelRatio||1, 1.5);
+    var r = cv.getBoundingClientRect();
+    var w = Math.max(1, Math.round((r.width || innerWidth || 1280)*dpr));
+    var h = Math.max(1, Math.round((r.height || innerHeight || 720)*dpr));
+    if (cv.width===w && cv.height===h) return;
+    cv.width=w; cv.height=h; gl.viewport(0,0,w,h);
+  }
+  addEventListener('resize', resize, {passive:true});
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(cv);
+  cv.addEventListener('webglcontextlost', function(e){ e.preventDefault(); ready=false; gl=null; }, false);
+  cv.addEventListener('webglcontextrestored', function(){ init(); }, false);
+
+  var mx=0,my=0,tx=0,ty=0;
+  addEventListener('pointermove', function(e){ tx=(e.clientX/innerWidth)*2-1; ty=(e.clientY/innerHeight)*2-1; }, {passive:true});
+
+  var slow = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var t0 = performance.now(), tries = 0;
+  (function loop(now){
+    requestAnimationFrame(loop);
+    if(!ready){ if(tries++ > 600 || !init()) return; }
+    resize();
+    mx += (tx-mx)*0.05; my += (ty-my)*0.05;
+    var t = ((now||t0)-t0)/1000*(slow?0.25:1);
+    gl.uniform2f(uRes, cv.width, cv.height);
+    gl.uniform1f(uTime, t);
+    gl.uniform2f(uMouse, mx, my);
+    gl.drawArrays(gl.TRIANGLES,0,3);
+  })(t0);
+})();
+</script>
+</body>
+</html>

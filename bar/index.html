@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Ember Room — Cocktail Bar | Reservations</title>
+<meta name="description" content="A small dark room with a long list. Classics, seasonal specials and a rotating amaro shelf. Walk-ins at the bar, reservations for the booths.">
+<meta name="theme-color" content="#0a0705">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0a0705; --ink:#f5eee4; --dim:#a3968a; --ember:#e8873c; --wine:#8e2f3f;
+    --line:rgba(245,238,228,.13); --glass:rgba(18,13,10,.6); --max:1060px;
+    --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+  }
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);
+    font:400 16px/1.7 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  a{color:inherit}
+
+  #gl{position:absolute;top:0;left:0;width:100%;height:100%;display:block;z-index:0;
+    background:radial-gradient(100% 80% at 50% 30%,#241209 0%,#120a06 55%,#0a0705 100%)}
+  #hero{position:relative;min-height:clamp(600px,96svh,1000px);display:flex;flex-direction:column;overflow:hidden}
+  #hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(75% 55% at 50% 42%,rgba(10,7,5,0) 0%,rgba(10,7,5,.5) 62%,rgba(10,7,5,.95) 100%),
+               linear-gradient(180deg,rgba(10,7,5,.6),transparent 26%,transparent 66%,var(--bg) 100%)}
+  .hero-in{position:relative;z-index:2;flex:1;display:flex;flex-direction:column}
+
+  nav{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:24px 0}
+  .mark{text-align:left}
+  .mark b{font:700 17px/1 var(--serif);letter-spacing:.22em;text-transform:uppercase;display:block}
+  .mark span{font-size:10px;letter-spacing:.34em;text-transform:uppercase;color:var(--dim);display:block;margin-top:6px}
+  .navl{display:none;gap:30px;font-size:13px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+  .navl a{text-decoration:none;color:var(--dim);transition:.2s}
+  .navl a:hover{color:var(--ember)}
+  @media(min-width:880px){.navl{display:flex}}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;text-decoration:none;
+    font-weight:700;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;
+    padding:14px 24px;border-radius:2px;transition:.25s;border:1px solid transparent;cursor:pointer;font-family:inherit}
+  .btn.solid{background:var(--ember);color:#150c06}
+  .btn.solid:hover{background:#f59a4e;transform:translateY(-2px)}
+  .btn.wire{border-color:var(--line);color:var(--ink);backdrop-filter:blur(12px);background:var(--glass)}
+  .btn.wire:hover{border-color:var(--ember);color:var(--ember)}
+
+  .hero-body{flex:1;display:grid;place-items:center;text-align:center;padding:40px 0 80px}
+  .est{font-size:10.5px;letter-spacing:.46em;text-transform:uppercase;color:var(--ember);font-weight:700}
+  h1{font:400 clamp(46px,11vw,124px)/.92 var(--serif);letter-spacing:-.015em;margin:26px 0 0}
+  h1 i{font-style:italic;color:var(--ember)}
+  .lede{margin:24px auto 0;color:var(--dim);font-size:clamp(16.5px,2.2vw,20px);max-width:44ch}
+  .acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px;justify-content:center}
+  .now{margin-top:44px;display:inline-flex;align-items:center;gap:11px;font-size:12.5px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+    border:1px solid var(--line);background:var(--glass);padding:10px 18px;border-radius:999px;backdrop-filter:blur(12px)}
+  .now i{width:7px;height:7px;border-radius:50%;display:block}
+  .now.open i{background:#5fbf7a;box-shadow:0 0 12px 2px rgba(95,191,122,.8)}
+  .now.shut i{background:#8e2f3f;box-shadow:0 0 12px 2px rgba(142,47,63,.7)}
+  .now b{color:var(--ink);font-weight:700}
+
+  section{padding:86px 0;border-top:1px solid var(--line)}
+  .kick{font-size:10.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--ember);font-weight:700}
+  h2{font:400 clamp(30px,5.6vw,50px)/1.06 var(--serif);letter-spacing:-.01em;margin-top:15px}
+  .sub{color:var(--dim);margin-top:15px;font-size:17px;max-width:54ch}
+
+  .list{margin-top:46px;display:grid;gap:0}
+  .row{display:flex;align-items:baseline;gap:16px;padding:22px 2px;border-bottom:1px solid var(--line);transition:.25s}
+  .row:first-child{border-top:1px solid var(--line)}
+  .row:hover{background:rgba(232,135,60,.045)}
+  .row .n{font:400 21px/1.3 var(--serif)}
+  .row .d{color:var(--dim);font-size:14px;margin-top:4px;letter-spacing:.02em}
+  .dots{flex:1;border-bottom:1px dotted rgba(245,238,228,.22);transform:translateY(-6px);min-width:20px}
+  .row .p{font:400 20px/1 var(--serif);color:var(--ember);white-space:nowrap}
+
+  .two{display:grid;gap:44px;margin-top:8px}
+  @media(min-width:880px){.two{grid-template-columns:1fr 1fr;gap:60px}}
+  .hours .hr{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line);font-size:15.5px}
+  .hours .hr.today{color:var(--ember);font-weight:700}
+  .panel{border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(14px);border-radius:4px;padding:30px}
+  .panel h3{font:400 21px/1.2 var(--serif)}
+  .panel p{color:var(--dim);margin-top:9px;font-size:15.5px}
+  .panel .r{padding:17px 0;border-bottom:1px solid var(--line)}
+  .panel .r:last-child{border-bottom:0;padding-bottom:0}
+
+  .res{text-align:center;padding:96px 0}
+  form{max-width:440px;margin:32px auto 0;display:grid;gap:13px;text-align:left}
+  label{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);font-weight:700}
+  input,select{width:100%;padding:14px 15px;border-radius:2px;border:1px solid var(--line);
+    background:rgba(245,238,228,.045);color:var(--ink);font:inherit;font-size:15.5px;margin-top:8px}
+  input:focus,select:focus{outline:none;border-color:var(--ember)}
+  select option{background:#120c08;color:var(--ink)}
+  .ok{display:none;border:1px solid rgba(232,135,60,.5);background:rgba(232,135,60,.09);
+    border-radius:3px;padding:24px;margin-top:22px}
+  .ok.show{display:block}
+  .ok b{font:400 20px/1.3 var(--serif);color:var(--ember)}
+  .ok p{color:var(--dim);margin-top:7px;font-size:15px}
+
+  footer{border-top:1px solid var(--line);padding:32px 0 48px;color:var(--dim);font-size:13.5px;
+    display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between}
+  .demo{position:fixed;left:14px;bottom:14px;z-index:100;background:var(--ember);color:#150c06;
+    font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    padding:9px 14px;border-radius:999px;text-decoration:none;box-shadow:0 12px 30px -10px rgba(0,0,0,.9)}
+  .rv{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+  .rv.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<div id="hero">
+  <canvas id="gl"></canvas>
+  <div class="hero-in">
+    <div class="wrap">
+      <nav>
+        <div class="mark"><b>The Ember Room</b><span>Cocktails · Est. 2018</span></div>
+        <div class="navl"><a href="#menu">The list</a><a href="#room">The room</a><a href="#hours">Hours</a></div>
+        <a class="btn solid" href="#book">Reserve</a>
+      </nav>
+    </div>
+    <div class="wrap hero-body">
+      <div>
+        <div class="est">Forty seats · No standing · No television</div>
+        <h1>Low light,<br><i>long list.</i></h1>
+        <p class="lede">A small dark room behind an unmarked door on Grafton Lane. Classics made properly, a shelf of amaro that keeps growing, and nowhere to be.</p>
+        <div class="acts">
+          <a class="btn solid" href="#book">Reserve a booth</a>
+          <a class="btn wire" href="#menu">Read the list</a>
+        </div>
+        <div><span class="now" id="now"><i></i><span id="nowtext">Checking…</span></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section id="menu" class="rv">
+    <div class="kick">The list</div>
+    <h2>Changes with the season. These don't.</h2>
+    <p class="sub">Everything is stirred or shaken to order. If you want something that isn't here, describe a feeling and the bartender will make it.</p>
+    <div class="list">
+      <div class="row"><div><div class="n">Ember Old Fashioned</div><div class="d">Rye, demerara, toasted pecan bitters, orange oil</div></div><div class="dots"></div><div class="p">18</div></div>
+      <div class="row"><div><div class="n">Smoke &amp; Velvet</div><div class="d">Mezcal, blackberry, lime, ancho, egg white</div></div><div class="dots"></div><div class="p">19</div></div>
+      <div class="row"><div><div class="n">The Grafton</div><div class="d">Gin, dry vermouth, celery bitters — very cold, very dry</div></div><div class="dots"></div><div class="p">17</div></div>
+      <div class="row"><div><div class="n">Amaro Flight</div><div class="d">Three from the shelf, chosen for you. Ask what's new.</div></div><div class="dots"></div><div class="p">22</div></div>
+      <div class="row"><div><div class="n">Paper Plane</div><div class="d">Bourbon, Aperol, Nonino, lemon. Equal parts, as intended.</div></div><div class="dots"></div><div class="p">18</div></div>
+      <div class="row"><div><div class="n">Nothing In Particular</div><div class="d">Tell the bar a spirit and a mood. No two are the same.</div></div><div class="dots"></div><div class="p">20</div></div>
+      <div class="row"><div><div class="n">Bar Snacks</div><div class="d">Olives, salted almonds, cured meat, good bread</div></div><div class="dots"></div><div class="p">6–14</div></div>
+    </div>
+  </section>
+
+  <section id="room" class="rv">
+    <div class="two">
+      <div>
+        <div class="kick">The room</div>
+        <h2>Forty seats and a rule about phone calls.</h2>
+        <p class="sub">We opened in 2018 in what used to be a print shop. The bar is the original counter, sanded back about nine times. There's no sign — the door is the one with the brass handle, between the florist and the laundry.</p>
+        <p class="sub">Take calls outside. Everything else is fine.</p>
+      </div>
+      <div class="panel">
+        <div class="r"><h3>Where</h3><p>14 Grafton Lane<br>Unmarked door, brass handle</p></div>
+        <div class="r"><h3>Reservations</h3><p>Booths only, up to six. The twelve bar seats are always walk-in.</p></div>
+        <div class="r"><h3>Last call</h3><p>Thirty minutes before close, every night.</p></div>
+        <div class="r"><h3>Getting here</h3><p>Two minutes from the Exchange stop. Street parking after 7pm.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="hours" class="rv">
+    <div class="two">
+      <div>
+        <div class="kick">Hours</div>
+        <h2>Open late, closed Mondays.</h2>
+        <div class="hours" id="hourlist">
+          <div class="hr" data-d="1"><span>Monday</span><span>Closed</span></div>
+          <div class="hr" data-d="2"><span>Tuesday</span><span>5pm — 12am</span></div>
+          <div class="hr" data-d="3"><span>Wednesday</span><span>5pm — 12am</span></div>
+          <div class="hr" data-d="4"><span>Thursday</span><span>5pm — 1am</span></div>
+          <div class="hr" data-d="5"><span>Friday</span><span>4pm — 2am</span></div>
+          <div class="hr" data-d="6"><span>Saturday</span><span>4pm — 2am</span></div>
+          <div class="hr" data-d="0"><span>Sunday</span><span>5pm — 11pm</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Quiet nights</h3>
+        <p>Tuesday and Wednesday before 7pm you'll usually have the room to yourself. Friday after 9pm there's a wait for booths and the bar fills first.</p>
+        <p style="margin-top:16px">Groups over six, email us and we'll work something out — but not on a Friday.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="res rv" id="book">
+    <div class="kick">Reserve</div>
+    <h2>Booths, up to six.</h2>
+    <p class="sub" style="margin-inline:auto">Bar seats are walk-in only — come early and you'll get one.</p>
+    <form id="f">
+      <div><label for="nm">Name</label><input id="nm" required placeholder="A. Whitlock"></div>
+      <div><label for="em">Email</label><input id="em" type="email" required placeholder="you@email.com"></div>
+      <div><label for="pp">Party size</label>
+        <select id="pp"><option>2 people</option><option>3 people</option><option>4 people</option><option>5 people</option><option>6 people</option></select>
+      </div>
+      <div><label for="dt">Date</label><input id="dt" type="date"></div>
+      <div><label for="tm">Time</label>
+        <select id="tm"><option>5:00pm</option><option>6:00pm</option><option>7:00pm</option><option>8:00pm</option><option>9:00pm</option><option>10:00pm</option></select>
+      </div>
+      <button class="btn solid" type="submit" style="margin-top:10px">Request this booth</button>
+    </form>
+    <div class="ok" id="ok"><b>Requested — we'll email to confirm.</b><p>If we can't fit you at that time we'll offer the nearest one.</p></div>
+  </section>
+
+</div>
+
+<div class="wrap">
+  <footer>
+    <span>© <span id="yr"></span> The Ember Room · 14 Grafton Lane</span>
+    <span>Closed Mondays · Take calls outside</span>
+  </footer>
+</div>
+
+<a class="demo" href="../index.html">← Demo site · back to portfolio</a>
+
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+/* hours: highlight today + compute open/closed right now */
+(function () {
+  var OPEN = { 1:null, 2:[17,24], 3:[17,24], 4:[17,25], 5:[16,26], 6:[16,26], 0:[17,23] };
+  var now = new Date(), d = now.getDay(), h = now.getHours() + now.getMinutes()/60;
+  var row = document.querySelector('#hourlist .hr[data-d="' + d + '"]');
+  if (row) row.classList.add('today');
+
+  // a range past 24 means it runs into the next morning
+  function isOpen(day, hour){
+    var r = OPEN[day];
+    if (r && hour >= r[0] && hour < Math.min(r[1], 24)) return true;
+    var prev = OPEN[(day + 6) % 7];                 // spillover from yesterday
+    return !!(prev && prev[1] > 24 && hour < prev[1] - 24);
+  }
+  var el = document.getElementById('now'), txt = document.getElementById('nowtext');
+  if (isOpen(d, h)) { el.className = 'now open'; txt.innerHTML = '<b>Open now</b> — walk in for a bar seat'; }
+  else { el.className = 'now shut'; txt.innerHTML = '<b>Closed right now</b> — see hours below'; }
+
+  var dt = document.getElementById('dt'), p = function (n) { return (n < 10 ? '0' : '') + n; };
+  dt.min = now.getFullYear() + '-' + p(now.getMonth() + 1) + '-' + p(now.getDate());
+})();
+
+document.getElementById('f').addEventListener('submit', function (e) {
+  e.preventDefault(); this.style.display = 'none';
+  document.getElementById('ok').classList.add('show');
+});
+
+var io = new IntersectionObserver(function (es) {
+  es.forEach(function (e) { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: .1 });
+document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+
+/* ============================================================
+   Domain-warped fractal noise — slow drifting smoke lit by a
+   single warm source. Pure WebGL, no libraries.
+   ============================================================ */
+(function () {
+  var cv = document.getElementById('gl');
+  var gl = null, ready = false, uRes, uTime, uMouse;
+
+  var VS = 'attribute vec2 p; void main(){ gl_Position = vec4(p,0.0,1.0); }';
+
+  var FS = [
+  'precision highp float;',
+  'uniform vec2 uRes; uniform float uTime; uniform vec2 uMouse;',
+  'float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7)))*43758.5453); }',
+  'float noise(vec2 p){',
+  '  vec2 i = floor(p), f = fract(p);',
+  '  vec2 u = f*f*(3.0-2.0*f);',
+  '  return mix(mix(hash(i), hash(i+vec2(1.0,0.0)), u.x),',
+  '             mix(hash(i+vec2(0.0,1.0)), hash(i+vec2(1.0,1.0)), u.x), u.y);',
+  '}',
+  'float fbm(vec2 p){',
+  '  float v = 0.0, a = 0.5;',
+  '  for(int i=0;i<6;i++){ v += a*noise(p); p *= 2.03; a *= 0.5; }',
+  '  return v;',
+  '}',
+  'void main(){',
+  '  vec2 uv = (gl_FragCoord.xy - 0.5*uRes)/uRes.y;',
+  '  vec2 p = uv*1.5 + uMouse*0.07;',
+  '  float t = uTime*0.06;',
+  // two levels of domain warping = curling smoke
+  '  vec2 q = vec2(fbm(p + vec2(0.0, t)), fbm(p + vec2(3.2,-t*0.8)));',
+  '  vec2 r = vec2(fbm(p + 3.0*q + vec2(1.7,9.2) + t*0.5),',
+  '               fbm(p + 3.0*q + vec2(8.3,2.8) - t*0.4));',
+  '  float f = fbm(p + 2.4*r);',
+  // warm ember light falling off from the centre
+  '  float glow = 1.0 - smoothstep(0.0, 1.15, length(uv*vec2(1.0,1.25)));',
+  '  vec3 col = vec3(0.035,0.022,0.016);',
+  '  col = mix(col, vec3(0.55,0.20,0.10), clamp(f*f*1.9,0.0,1.0));',
+  '  col = mix(col, vec3(0.95,0.55,0.22), clamp(pow(f,3.4)*2.6,0.0,1.0)*glow);',
+  '  col = mix(col, vec3(0.42,0.10,0.16), clamp(r.x*r.y*1.5,0.0,1.0)*0.55);',   // wine in the shadows
+  '  col *= 0.32 + glow*1.15;',
+  '  col += vec3(0.9,0.42,0.16)*pow(glow,3.0)*0.30;',
+  '  col = col/(1.0+col*0.55);',
+  '  col = pow(max(col,0.0), vec3(0.90));',
+  '  col += (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898,78.233)))*43758.5453)-0.5)*0.022;',
+  '  gl_FragColor = vec4(col,1.0);',
+  '}'].join('\n');
+
+  function sh(type, src){
+    var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+    if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)){ console.error(gl.getShaderInfoLog(s)); return null; }
+    return s;
+  }
+  function init(){
+    if (ready) return true;
+    try { gl = cv.getContext('webgl',{antialias:false,alpha:false,powerPreference:'high-performance'})
+             || cv.getContext('experimental-webgl'); } catch(e){ gl = null; }
+    if (!gl) return false;
+    var vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FS);
+    if (!vs || !fs) return false;
+    var pr = gl.createProgram(); gl.attachShader(pr,vs); gl.attachShader(pr,fs); gl.linkProgram(pr);
+    if(!gl.getProgramParameter(pr, gl.LINK_STATUS)){ console.error(gl.getProgramInfoLog(pr)); return false; }
+    gl.useProgram(pr);
+    var b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,b);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+    var l = gl.getAttribLocation(pr,'p'); gl.enableVertexAttribArray(l);
+    gl.vertexAttribPointer(l,2,gl.FLOAT,false,0,0);
+    uRes = gl.getUniformLocation(pr,'uRes'); uTime = gl.getUniformLocation(pr,'uTime');
+    uMouse = gl.getUniformLocation(pr,'uMouse');
+    ready = true; resize(); return true;
+  }
+  function resize(){
+    if(!gl) return;
+    var dpr = Math.min(devicePixelRatio||1, 1.4);
+    var r = cv.getBoundingClientRect();
+    var w = Math.max(1, Math.round((r.width || innerWidth || 1280)*dpr));
+    var h = Math.max(1, Math.round((r.height || innerHeight || 720)*dpr));
+    if (cv.width===w && cv.height===h) return;
+    cv.width=w; cv.height=h; gl.viewport(0,0,w,h);
+  }
+  addEventListener('resize', resize, {passive:true});
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(cv);
+  cv.addEventListener('webglcontextlost', function(e){ e.preventDefault(); ready=false; gl=null; }, false);
+  cv.addEventListener('webglcontextrestored', function(){ init(); }, false);
+
+  var mx=0,my=0,tx=0,ty=0;
+  addEventListener('pointermove', function(e){ tx=(e.clientX/innerWidth)*2-1; ty=(e.clientY/innerHeight)*2-1; }, {passive:true});
+
+  var slow = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var t0 = performance.now(), tries = 0;
+  (function loop(now){
+    requestAnimationFrame(loop);
+    if(!ready){ if(tries++ > 600 || !init()) return; }
+    resize();
+    mx += (tx-mx)*0.04; my += (ty-my)*0.04;
+    var t = ((now||t0)-t0)/1000*(slow?0.25:1);
+    gl.uniform2f(uRes, cv.width, cv.height);
+    gl.uniform1f(uTime, t);
+    gl.uniform2f(uMouse, mx, my);
+    gl.drawArrays(gl.TRIANGLES,0,3);
+  })(t0);
+})();
+</script>
+</body>
+</html>

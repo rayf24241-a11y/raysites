@@ -39,7 +39,7 @@
   #veil{
     position:fixed; inset:0; z-index:1; pointer-events:none;
     background:
-      radial-gradient(90% 60% at 50% 8%, rgba(5,6,10,0) 0%, rgba(5,6,10,.35) 55%, rgba(5,6,10,.82) 100%);
+      radial-gradient(90% 60% at 50% 8%, rgba(5,6,10,.18) 0%, rgba(5,6,10,.42) 55%, rgba(5,6,10,.84) 100%);
   }
   /* ---------- layout ---------- */
   .wrap{position:relative; z-index:2; max-width:var(--max); margin:0 auto; padding:0 22px}
@@ -300,9 +300,7 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
    ============================================================ */
 (function () {
   const cv = document.getElementById('gl');
-  const gl = cv.getContext('webgl', {antialias:false, alpha:true, powerPreference:'high-performance'})
-          || cv.getContext('experimental-webgl');
-  if (!gl) return;                                   // CSS gradient stays as the fallback
+  let gl = null, ready = false, uRes, uTime, uMouse;
 
   const VS = `
     attribute vec2 p;
@@ -399,24 +397,57 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
     if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)){ console.error(gl.getShaderInfoLog(s)); return null; }
     return s;
   }
-  const vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FS);
-  if (!vs || !fs) return;
 
-  const prog = gl.createProgram();
-  gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
-  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)){ console.error(gl.getProgramInfoLog(prog)); return; }
-  gl.useProgram(prog);
+  // Context creation can fail in a backgrounded tab, so init is retried
+  // from the render loop instead of being a one-shot on page load.
+  function init(){
+    if (ready) return true;
+    try {
+      gl = cv.getContext('webgl', {antialias:false, alpha:true, powerPreference:'high-performance'})
+        || cv.getContext('experimental-webgl');
+    } catch (e){ gl = null; }
+    if (!gl) return false;                            // CSS gradient stays as the fallback
 
-  const buf = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
-  const loc = gl.getAttribLocation(prog, 'p');
-  gl.enableVertexAttribArray(loc);
-  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    const vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FS);
+    if (!vs || !fs) return false;
 
-  const uRes = gl.getUniformLocation(prog, 'uRes');
-  const uTime = gl.getUniformLocation(prog, 'uTime');
-  const uMouse = gl.getUniformLocation(prog, 'uMouse');
+    const prog = gl.createProgram();
+    gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)){ console.error(gl.getProgramInfoLog(prog)); return false; }
+    gl.useProgram(prog);
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(prog, 'p');
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+    uRes   = gl.getUniformLocation(prog, 'uRes');
+    uTime  = gl.getUniformLocation(prog, 'uTime');
+    uMouse = gl.getUniformLocation(prog, 'uMouse');
+
+    ready = true;
+    resize();
+    return true;
+  }
+
+  // Sizing falls back through rect -> window -> document so a zero-size
+  // measurement at load can never leave the canvas stuck at 0x0.
+  function resize(){
+    if (!gl) return;
+    const dpr = Math.min(devicePixelRatio || 1, 1.5);
+    const r = cv.getBoundingClientRect();
+    const w = Math.max(1, Math.round((r.width  || innerWidth  || document.documentElement.clientWidth  || 1280) * dpr));
+    const h = Math.max(1, Math.round((r.height || innerHeight || document.documentElement.clientHeight ||  720) * dpr));
+    if (cv.width === w && cv.height === h) return;
+    cv.width = w; cv.height = h;
+    gl.viewport(0, 0, w, h);
+  }
+  addEventListener('resize', resize, {passive:true});
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(cv);
+  cv.addEventListener('webglcontextlost', e => { e.preventDefault(); ready = false; gl = null; }, false);
+  cv.addEventListener('webglcontextrestored', () => { init(); }, false);
 
   let mx = 0, my = 0, tx = 0, ty = 0;
   addEventListener('pointermove', e => {
@@ -424,19 +455,16 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
     ty = (e.clientY / innerHeight) * 2 - 1;
   }, {passive:true});
 
-  function resize(){
-    const dpr = Math.min(devicePixelRatio || 1, 1.5);
-    cv.width  = Math.floor(innerWidth  * dpr);
-    cv.height = Math.floor(innerHeight * dpr);
-    gl.viewport(0, 0, cv.width, cv.height);
-  }
-  addEventListener('resize', resize, {passive:true});
-  resize();
-
   const slow = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const t0 = performance.now();
+  let tries = 0;
+
   (function loop(now){
     requestAnimationFrame(loop);
+    if (!ready){
+      if (tries++ > 600 || !init()) return;           // retries once the tab is actually visible
+    }
+    resize();
     mx += (tx - mx) * 0.045; my += (ty - my) * 0.045;
     const t = ((now || t0) - t0) / 1000 * (slow ? 0.25 : 1);
     gl.uniform2f(uRes, cv.width, cv.height);

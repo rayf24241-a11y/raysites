@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ironside Barber Co. — Est. 2011 | Walk-ins Welcome</title>
+<meta name="description" content="Classic cuts, hot towel shaves and beard work in the Old Fourth Ward. Walk-ins welcome, seven days a week.">
+<meta name="theme-color" content="#0d0b09">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --ink:#0d0b09; --paper:#f4ede3; --amber:#d99a4e; --brick:#8c3b2b;
+    --muted:#9d9086; --line:rgba(244,237,227,.14); --max:1120px;
+    --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+  }
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--paper);
+    font:400 16px/1.65 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  a{color:inherit}
+
+  /* grain */
+  body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.045;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  /* top bar */
+  .bar{background:var(--brick);font-size:13.5px;letter-spacing:.06em;text-align:center;padding:9px 16px;font-weight:600}
+  nav{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 0}
+  .mark{display:flex;align-items:center;gap:12px}
+  .pole{width:15px;height:38px;border-radius:8px;border:1.5px solid var(--line);overflow:hidden;
+    background:repeating-linear-gradient(35deg,#f4ede3 0 6px,var(--brick) 6px 12px,#f4ede3 12px 18px,#2f5d8c 18px 24px)}
+  .mark b{font:700 17px/1 var(--serif);letter-spacing:.18em;text-transform:uppercase}
+  .mark span{display:block;font-size:10.5px;letter-spacing:.3em;color:var(--muted);margin-top:5px}
+  .navl{display:none;gap:30px;font-size:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+  .navl a{text-decoration:none;color:var(--muted);transition:.2s}
+  .navl a:hover{color:var(--amber)}
+  @media(min-width:860px){.navl{display:flex}}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;text-decoration:none;
+    font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;
+    padding:14px 24px;border-radius:3px;transition:.22s;border:1.5px solid transparent;cursor:pointer;font-family:inherit}
+  .btn.solid{background:var(--amber);color:var(--ink)}
+  .btn.solid:hover{background:#e8ac60;transform:translateY(-2px)}
+  .btn.wire{border-color:var(--line);color:var(--paper)}
+  .btn.wire:hover{border-color:var(--amber);color:var(--amber)}
+
+  /* hero */
+  header{position:relative;padding:56px 0 86px;overflow:hidden}
+  header::before{content:'';position:absolute;inset:0;z-index:0;
+    background:radial-gradient(70% 90% at 78% 22%,rgba(217,154,78,.20),transparent 62%),
+               radial-gradient(60% 80% at 10% 90%,rgba(140,59,43,.26),transparent 60%)}
+  .hero{position:relative;z-index:1;display:grid;gap:44px;align-items:center}
+  @media(min-width:940px){.hero{grid-template-columns:1.08fr .92fr;gap:56px}}
+  .est{font-size:11.5px;letter-spacing:.42em;text-transform:uppercase;color:var(--amber);font-weight:700}
+  h1{font:700 clamp(46px,8.6vw,90px)/.94 var(--serif);letter-spacing:-.02em;margin:20px 0 0}
+  h1 i{font-style:italic;color:var(--amber)}
+  .lede{margin-top:22px;color:var(--muted);font-size:clamp(16.5px,2vw,19px);max-width:44ch}
+  .acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+  .trust{display:flex;flex-wrap:wrap;gap:26px;margin-top:40px;padding-top:28px;border-top:1px solid var(--line)}
+  .trust div b{display:block;font:700 24px/1 var(--serif)}
+  .trust div span{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+  /* chair illustration */
+  .chair{border:1px solid var(--line);border-radius:4px;padding:26px;
+    background:linear-gradient(165deg,rgba(244,237,227,.06),rgba(244,237,227,.015))}
+  .chair svg{width:100%;height:auto;display:block}
+
+  /* sections */
+  section{padding:82px 0;border-top:1px solid var(--line)}
+  .head{max-width:620px}
+  .kick{font-size:11.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--amber);font-weight:700}
+  h2{font:700 clamp(30px,5.2vw,46px)/1.06 var(--serif);letter-spacing:-.015em;margin-top:14px}
+  .sub{color:var(--muted);margin-top:14px;font-size:16.5px}
+
+  /* services */
+  .menu{margin-top:44px;display:grid;gap:0}
+  .item{display:flex;align-items:baseline;gap:16px;padding:20px 4px;border-bottom:1px solid var(--line)}
+  .item:first-child{border-top:1px solid var(--line)}
+  .item .n{font:600 19px/1.3 var(--serif)}
+  .item .d{color:var(--muted);font-size:14.5px;margin-top:3px}
+  .dots{flex:1;border-bottom:1px dotted rgba(244,237,227,.24);transform:translateY(-5px);min-width:18px}
+  .item .p{font:700 19px/1 var(--serif);color:var(--amber);white-space:nowrap}
+
+  /* barbers */
+  .team{display:grid;gap:18px;margin-top:44px}
+  @media(min-width:760px){.team{grid-template-columns:repeat(3,1fr)}}
+  .b{border:1px solid var(--line);border-radius:4px;overflow:hidden;transition:.25s;
+     background:linear-gradient(180deg,rgba(244,237,227,.05),transparent)}
+  .b:hover{border-color:rgba(217,154,78,.5);transform:translateY(-3px)}
+  .mono{height:168px;display:grid;place-items:center;position:relative;
+    background:linear-gradient(150deg,#1a1512,#241b16 55%,#161210)}
+  .mono::after{content:'';position:absolute;inset:0;
+    background:radial-gradient(60% 70% at 50% 25%,rgba(217,154,78,.22),transparent 65%)}
+  .mono b{position:relative;z-index:1;font:700 46px/1 var(--serif);color:var(--amber);letter-spacing:.06em}
+  .b .who{padding:20px}
+  .b .who h3{font:600 18px/1.2 var(--serif)}
+  .b .who p{color:var(--muted);font-size:14px;margin-top:5px}
+
+  /* hours */
+  .split{display:grid;gap:40px}
+  @media(min-width:880px){.split{grid-template-columns:1fr 1fr;gap:56px}}
+  .hours{margin-top:8px}
+  .hr{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line);font-size:15.5px}
+  .hr.today{color:var(--amber);font-weight:700}
+  .hr span:first-child{letter-spacing:.05em}
+  .info{border:1px solid var(--line);border-radius:4px;padding:28px;
+    background:linear-gradient(180deg,rgba(244,237,227,.05),transparent)}
+  .info h3{font:600 19px/1.2 var(--serif)}
+  .info p{color:var(--muted);margin-top:8px;font-size:15.5px}
+  .info .row{padding:16px 0;border-bottom:1px solid var(--line)}
+  .info .row:last-of-type{border-bottom:0}
+
+  /* book */
+  .book{text-align:center;padding:96px 0}
+  .book h2{max-width:16ch;margin:14px auto 0}
+  form{max-width:460px;margin:34px auto 0;display:grid;gap:12px;text-align:left}
+  label{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  input,select{width:100%;padding:14px 15px;border-radius:3px;border:1px solid var(--line);
+    background:rgba(244,237,227,.05);color:var(--paper);font:inherit;font-size:15.5px;margin-top:7px}
+  input:focus,select:focus{outline:none;border-color:var(--amber)}
+  select option{background:var(--ink);color:var(--paper)}
+  .ok{display:none;border:1px solid rgba(217,154,78,.55);background:rgba(217,154,78,.1);
+    border-radius:4px;padding:20px;margin-top:20px;text-align:center}
+  .ok.show{display:block}
+  .ok b{font:600 18px/1.3 var(--serif);color:var(--amber)}
+  .ok p{color:var(--muted);font-size:14.5px;margin-top:6px}
+
+  footer{border-top:1px solid var(--line);padding:34px 0 44px;color:var(--muted);font-size:13.5px;
+    display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between}
+  .demo{position:fixed;left:14px;bottom:14px;z-index:100;background:var(--amber);color:var(--ink);
+    font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    padding:9px 14px;border-radius:999px;text-decoration:none;box-shadow:0 10px 30px -8px rgba(0,0,0,.7)}
+  .rv{opacity:0;transform:translateY(22px);transition:opacity .75s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1)}
+  .rv.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<div class="bar">Walk-ins welcome — 7 days a week — (404) 555-0182</div>
+
+<div class="wrap">
+  <nav>
+    <div class="mark">
+      <div class="pole"></div>
+      <div><b>Ironside</b><span>Barber Co.</span></div>
+    </div>
+    <div class="navl">
+      <a href="#services">Services</a><a href="#barbers">Barbers</a><a href="#visit">Visit</a>
+    </div>
+    <a class="btn solid" href="#book">Book a chair</a>
+  </nav>
+</div>
+
+<header>
+  <div class="wrap hero">
+    <div>
+      <div class="est">Established 2011 · Old Fourth Ward</div>
+      <h1>A proper cut,<br>and <i>nothing</i> rushed.</h1>
+      <p class="lede">Straight-razor shaves, classic fades, and beard work done by people who've been doing it a long time. Sit down, take your time.</p>
+      <div class="acts">
+        <a class="btn solid" href="#book">Book a chair</a>
+        <a class="btn wire" href="#services">See the menu</a>
+      </div>
+      <div class="trust">
+        <div><b>14 yrs</b><span>On the same corner</span></div>
+        <div><b>4.9★</b><span>612 reviews</span></div>
+        <div><b>6</b><span>Chairs, no waiting</span></div>
+      </div>
+    </div>
+
+    <div class="chair">
+      <svg viewBox="0 0 400 330" fill="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="lea" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#8c3b2b"/><stop offset="1" stop-color="#5d2519"/>
+          </linearGradient>
+          <linearGradient id="chr" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#d99a4e"/><stop offset=".55" stop-color="#8a6335"/><stop offset="1" stop-color="#d99a4e"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="200" cy="300" rx="128" ry="15" fill="#000" opacity=".45"/>
+        <rect x="150" y="268" width="100" height="16" rx="6" fill="url(#chr)"/>
+        <rect x="188" y="196" width="24" height="78" fill="url(#chr)"/>
+        <rect x="120" y="168" width="160" height="34" rx="12" fill="url(#lea)"/>
+        <rect x="120" y="168" width="160" height="10" rx="5" fill="#fff" opacity=".10"/>
+        <rect x="128" y="72" width="144" height="104" rx="20" fill="url(#lea)"/>
+        <path d="M136 96h128M136 120h128M136 144h128" stroke="#000" opacity=".22" stroke-width="2"/>
+        <rect x="146" y="44" width="108" height="36" rx="14" fill="url(#lea)"/>
+        <rect x="146" y="44" width="108" height="11" rx="5" fill="#fff" opacity=".10"/>
+        <rect x="96" y="176" width="30" height="12" rx="5" fill="url(#chr)"/>
+        <rect x="274" y="176" width="30" height="12" rx="5" fill="url(#chr)"/>
+        <circle cx="200" cy="30" r="10" fill="#d99a4e" opacity=".28"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section id="services" class="rv">
+    <div class="head">
+      <div class="kick">The menu</div>
+      <h2>Simple list. Honest prices.</h2>
+      <p class="sub">No packages, no upsells. Cash, card or tap — whatever's easiest.</p>
+    </div>
+    <div class="menu">
+      <div class="item"><div><div class="n">The Ironside Cut</div><div class="d">Consultation, cut, hot towel, style</div></div><div class="dots"></div><div class="p">$38</div></div>
+      <div class="item"><div><div class="n">Skin Fade</div><div class="d">Clipper work down to the skin, blended by hand</div></div><div class="dots"></div><div class="p">$42</div></div>
+      <div class="item"><div><div class="n">Straight Razor Shave</div><div class="d">Hot lather, two passes, cold towel finish</div></div><div class="dots"></div><div class="p">$45</div></div>
+      <div class="item"><div><div class="n">Beard Shape &amp; Oil</div><div class="d">Line-up, trim, conditioning oil</div></div><div class="dots"></div><div class="p">$25</div></div>
+      <div class="item"><div><div class="n">Cut &amp; Beard</div><div class="d">The full sit-down. About an hour.</div></div><div class="dots"></div><div class="p">$58</div></div>
+      <div class="item"><div><div class="n">Kids (under 12)</div><div class="d">Booster seat, no judgment on the wiggling</div></div><div class="dots"></div><div class="p">$22</div></div>
+    </div>
+  </section>
+
+  <section id="barbers" class="rv">
+    <div class="head">
+      <div class="kick">The chairs</div>
+      <h2>Ask for whoever you like.</h2>
+      <p class="sub">Every one of them can do everything on the menu. Regulars have their favourites.</p>
+    </div>
+    <div class="team">
+      <div class="b"><div class="mono"><b>MR</b></div><div class="who"><h3>Marcus Reyes</h3><p>Owner · fades &amp; straight razor · 14 years</p></div></div>
+      <div class="b"><div class="mono"><b>DT</b></div><div class="who"><h3>Denise Tran</h3><p>Textured cuts &amp; scissor work · 9 years</p></div></div>
+      <div class="b"><div class="mono"><b>SO</b></div><div class="who"><h3>Sam Okafor</h3><p>Beard sculpting &amp; classic taper · 6 years</p></div></div>
+    </div>
+  </section>
+
+  <section id="visit" class="rv">
+    <div class="split">
+      <div>
+        <div class="kick">Hours</div>
+        <h2>Open seven days.</h2>
+        <p class="sub">Last chair goes 45 minutes before close. Walk in and we'll find you a spot.</p>
+        <div class="hours" id="hours">
+          <div class="hr" data-d="1"><span>Monday</span><span>9:00 — 7:00</span></div>
+          <div class="hr" data-d="2"><span>Tuesday</span><span>9:00 — 7:00</span></div>
+          <div class="hr" data-d="3"><span>Wednesday</span><span>9:00 — 7:00</span></div>
+          <div class="hr" data-d="4"><span>Thursday</span><span>9:00 — 8:00</span></div>
+          <div class="hr" data-d="5"><span>Friday</span><span>8:00 — 8:00</span></div>
+          <div class="hr" data-d="6"><span>Saturday</span><span>8:00 — 6:00</span></div>
+          <div class="hr" data-d="0"><span>Sunday</span><span>10:00 — 4:00</span></div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="row"><h3>Where we are</h3><p>418 Edgewood Avenue NE<br>Atlanta, GA 30312</p></div>
+        <div class="row"><h3>Call the shop</h3><p>(404) 555-0182</p></div>
+        <div class="row"><h3>Parking</h3><p>Free lot behind the building, off Boulevard. Street parking is metered until 6pm.</p></div>
+        <div class="row"><h3>Payment</h3><p>Cash, card, tap. Tips appreciated, never expected.</p></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="wrap">
+  <section class="book rv" id="book">
+    <div class="kick">Book a chair</div>
+    <h2>Tell us when, and we'll be ready.</h2>
+    <form id="f">
+      <div><label for="nm">Your name</label><input id="nm" required placeholder="Marcus R."></div>
+      <div><label for="ph">Phone</label><input id="ph" type="tel" required placeholder="(404) 555-0100"></div>
+      <div><label for="sv">Service</label>
+        <select id="sv">
+          <option>The Ironside Cut — $38</option><option>Skin Fade — $42</option>
+          <option>Straight Razor Shave — $45</option><option>Beard Shape &amp; Oil — $25</option>
+          <option>Cut &amp; Beard — $58</option><option>Kids — $22</option>
+        </select>
+      </div>
+      <div><label for="dy">Preferred day</label><input id="dy" type="date"></div>
+      <button class="btn solid" type="submit" style="margin-top:10px">Request this time</button>
+    </form>
+    <div class="ok" id="ok"><b>Got it — we'll text you to confirm.</b><p>Usually within the hour during shop hours.</p></div>
+  </section>
+</div>
+
+<div class="wrap">
+  <footer>
+    <span>© <span id="yr"></span> Ironside Barber Co. · 418 Edgewood Ave NE, Atlanta</span>
+    <span>Walk-ins welcome · (404) 555-0182</span>
+  </footer>
+</div>
+
+<a class="demo" href="../index.html">← Demo site · back to portfolio</a>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // highlight today's row
+  var today = new Date().getDay();
+  var row = document.querySelector('#hours .hr[data-d="' + today + '"]');
+  if (row) row.classList.add('today');
+
+  // date picker can't be set in the past (local date, not UTC — UTC blocks
+  // same-day booking for anyone west of Greenwich after late afternoon)
+  var now = new Date(), pad = function (n) { return (n < 10 ? '0' : '') + n; };
+  document.getElementById('dy').min =
+    now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate());
+
+  document.getElementById('f').addEventListener('submit', function (e) {
+    e.preventDefault();
+    this.style.display = 'none';
+    document.getElementById('ok').classList.add('show');
+  });
+
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (en) { if (en.isIntersecting) en.target.classList.add('in'); });
+  }, { threshold: .1 });
+  document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+</script>
+</body>
+</html>

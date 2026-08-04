@@ -145,17 +145,49 @@
     background:var(--glass); backdrop-filter:blur(18px); transition:.3s;
   }
   .work:hover{transform:translateY(-4px); border-color:rgba(150,170,255,.45)}
-  .shot{height:186px; background:linear-gradient(135deg,#1b1f45,#2a1d4d 55%,#3d1f45); position:relative}
-  .shot::after{
+  /* live preview of the real demo site, scaled down in-place */
+  .shot{aspect-ratio:16/10; background:#080a14; position:relative; overflow:hidden}
+  .shot iframe{
+    position:absolute; top:0; left:0; width:1280px; height:800px; border:0;
+    transform-origin:0 0; transform:scale(.26); pointer-events:none;
+  }
+  .shot.art{background:linear-gradient(135deg,#151a3c,#2a1d4d 55%,#3d1f45); display:grid; place-items:center}
+  .shot.art::after{
     content:''; position:absolute; inset:0;
-    background:radial-gradient(70% 90% at 25% 15%,rgba(122,240,255,.35),transparent 60%),
-               radial-gradient(70% 90% at 85% 90%,rgba(255,122,200,.3),transparent 60%);
+    background:radial-gradient(70% 90% at 25% 15%,rgba(122,240,255,.4),transparent 60%),
+               radial-gradient(70% 90% at 85% 90%,rgba(255,122,200,.34),transparent 60%);
+  }
+  .shot.art b{
+    position:relative; z-index:1; font-size:13px; font-weight:800; letter-spacing:.2em;
+    text-transform:uppercase; color:#dfe7ff; text-shadow:0 2px 20px rgba(0,0,0,.7);
+  }
+  .work .tag{
+    position:absolute; top:11px; left:11px; z-index:2; font-size:10.5px; font-weight:800;
+    letter-spacing:.13em; text-transform:uppercase; padding:5px 10px; border-radius:999px;
+    background:rgba(5,7,16,.82); color:#cfe3ff; border:1px solid var(--line); backdrop-filter:blur(8px);
   }
   .work .meta{padding:20px 22px}
   .work .meta h3{font-size:17px;font-weight:700}
   .work .meta p{color:var(--dim); font-size:14px; margin-top:5px}
 
   /* ---------- final ---------- */
+  /* faq */
+  .faq{margin-top:40px; border-top:1px solid var(--line)}
+  .faq details{border-bottom:1px solid var(--line)}
+  .faq summary{
+    list-style:none; cursor:pointer; padding:22px 44px 22px 2px; position:relative;
+    font-size:17.5px; font-weight:650; letter-spacing:-.01em; transition:.2s;
+  }
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary:hover{color:var(--a)}
+  .faq summary::after{
+    content:''; position:absolute; right:8px; top:50%; width:11px; height:11px;
+    border-right:2px solid var(--dim); border-bottom:2px solid var(--dim);
+    transform:translateY(-70%) rotate(45deg); transition:transform .25s;
+  }
+  .faq details[open] summary::after{transform:translateY(-25%) rotate(-135deg)}
+  .faq details p{color:var(--dim); padding:0 44px 24px 2px; font-size:16px; max-width:70ch}
+
   .final{text-align:center; padding:104px 0 40px}
   .final h2{max-width:18ch; margin-inline:auto}
   footer{
@@ -197,13 +229,22 @@
   </header>
 
   <section id="work" class="reveal">
-    <div class="kicker">Recent work</div>
-    <h2>Real sites, built fast.</h2>
-    <p class="sub">Every one of these went from first message to live in under two days.</p>
+    <div class="kicker">The work</div>
+    <h2>These are live. Click them.</h2>
+    <p class="sub">Not screenshots — the actual sites, running right here in the page. Open any of them and click around.</p>
     <div class="grid g3">
-      <a class="work" href="#" data-demo><div class="shot"></div><div class="meta"><h3>Barbershop</h3><p>Booking + gallery — 1 day</p></div></a>
-      <a class="work" href="#" data-demo><div class="shot"></div><div class="meta"><h3>Landscaping Co.</h3><p>Quote form + service pages — 2 days</p></div></a>
-      <a class="work" href="#" data-demo><div class="shot"></div><div class="meta"><h3>This page</h3><p>Live 3D, zero libraries — 1 hour</p></div></a>
+      <a class="work" href="barbershop/" data-demo>
+        <div class="shot"><span class="tag">Live</span><iframe src="barbershop/" loading="lazy" tabindex="-1" title="Ironside Barber Co. demo" scrolling="no"></iframe></div>
+        <div class="meta"><h3>Ironside Barber Co.</h3><p>Booking form, price menu, live hours — 1 day</p></div>
+      </a>
+      <a class="work" href="landscaping/" data-demo>
+        <div class="shot"><span class="tag">Live</span><iframe src="landscaping/" loading="lazy" tabindex="-1" title="Cedar &amp; Stone Landscaping demo" scrolling="no"></iframe></div>
+        <div class="meta"><h3>Cedar &amp; Stone Landscaping</h3><p>Quote form, service pricing, project gallery — 2 days</p></div>
+      </a>
+      <a class="work" href="#top" data-demo>
+        <div class="shot art"><span class="tag">This page</span><b>Raymarched WebGL · 0 libraries</b></div>
+        <div class="meta"><h3>You're looking at it</h3><p>Real-time 3D background, no frameworks — 1 hour</p></div>
+      </a>
     </div>
   </section>
 
@@ -246,6 +287,37 @@
     </div>
   </section>
 
+  <section class="reveal">
+    <div class="kicker">Straight answers</div>
+    <h2>The things people ask first.</h2>
+    <div class="faq">
+      <details>
+        <summary>Why is it only $150? What's the catch?</summary>
+        <p>No catch. I work fast, I don't have an office, and I don't have a sales team to pay for. An agency charges thousands because they have thirty people between you and whoever actually builds the thing. Here that's just me.</p>
+      </details>
+      <details>
+        <summary>What if I don't like it?</summary>
+        <p>Then you don't pay. You see the finished site working before any money changes hands. If it's not right I'll fix it, and if it's still not right we shake hands and you owe nothing.</p>
+      </details>
+      <details>
+        <summary>Do I own the site?</summary>
+        <p>All of it. The domain is in your name, the hosting account is yours, and the files are yours. I'm not renting it to you and you're not locked in — if you want to move it somewhere else later, you can.</p>
+      </details>
+      <details>
+        <summary>I don't have a domain name yet.</summary>
+        <p>I'll help you pick one and get it set up. You pay the registrar directly — usually about $12 a year — so it stays in your name, not mine. Hosting for a site like this is free.</p>
+      </details>
+      <details>
+        <summary>Can you change things later?</summary>
+        <p>Yes. Small stuff — new hours, a phone number, swapping a photo — send me a message and it's done same day. Bigger additions like a whole new page we'll price when you need it.</p>
+      </details>
+      <details>
+        <summary>How fast, really?</summary>
+        <p>48 hours from the moment you send me your details. The clock starts when I have your photos, hours and text — not when you first message me. Send everything at once and it's usually faster.</p>
+      </details>
+    </div>
+  </section>
+
   <section class="final reveal" id="contact">
     <div class="kicker">Let's go</div>
     <h2>Send me one message and you'll have a site by Thursday.</h2>
@@ -267,13 +339,7 @@
    EDIT THIS — everything you need to change is right here.
    ============================================================ */
 const CONFIG = {
-  email: 'rayf24241@gmail.com',
-  // Paste your live demo links here (in order of the 3 cards):
-  demos: [
-    'https://example.com',
-    'https://example.com',
-    'https://example.com'
-  ]
+  email: 'rayf24241@gmail.com'
 };
 /* ========================================================== */
 
@@ -286,10 +352,16 @@ const mailto = 'mailto:' + CONFIG.email + '?subject=' +
   const el = document.getElementById(id);
   if (el) el.href = mailto;
 });
-document.querySelectorAll('[data-demo]').forEach((a,i) => {
-  const url = CONFIG.demos[i];
-  if (url && url !== 'https://example.com') { a.href = url; a.target = '_blank'; a.rel = 'noopener'; }
-});
+/* Scale each live preview so a 1280px-wide render fits its card exactly. */
+function fitPreviews(){
+  document.querySelectorAll('.shot iframe').forEach(f => {
+    const w = f.parentElement.clientWidth;
+    if (w) f.style.transform = 'scale(' + (w / 1280) + ')';
+  });
+}
+addEventListener('resize', fitPreviews, {passive:true});
+addEventListener('load', fitPreviews);
+fitPreviews();
 
 /* reveal on scroll */
 const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('in')), {threshold:.12});

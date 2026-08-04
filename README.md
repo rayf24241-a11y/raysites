@@ -14,7 +14,7 @@ const CONFIG = {
 ```
 
 - `email` — where the "Email me" buttons send people.
-- `demos` — your three live demo links. Until you fill these in, the work cards don't link anywhere.
+- The demo sites live in `barbershop/` and `landscaping/` and are wired up already.
 
 Change the price in two places if you ever raise it: search the file for `$150`.
 

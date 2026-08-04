@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ironside Barber Co. — Case Study | RAY</title>
+<meta name="description" content="How I'd build a barbershop site: warm editorial styling, a price menu that reads like the one on the wall, and a four-field booking form. 5.5 KB, zero dependencies.">
+<meta name="theme-color" content="#05060a">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#05060a; --ink:#f2f4ff; --dim:#9aa3c4; --line:rgba(150,170,255,.14);
+    --glass:rgba(12,16,32,.55); --a:#7af0ff; --b:#b98cff; --c:#ff7ac8;
+    --amber:#d99a4e; --max:900px;
+  }
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);
+    font:400 16px/1.72 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Inter,Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;z-index:-1;
+    background:radial-gradient(90% 60% at 50% -8%,rgba(185,140,255,.16),transparent 60%),
+               radial-gradient(70% 50% at 88% 12%,rgba(217,154,78,.13),transparent 60%),
+               radial-gradient(80% 60% at 8% 92%,rgba(122,240,255,.09),transparent 60%)}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  a{color:inherit}
+
+  nav{display:flex;align-items:center;justify-content:space-between;gap:16px;
+    max-width:var(--max);margin:0 auto;padding:24px}
+  .logo{font-weight:800;letter-spacing:.28em;font-size:14px;text-decoration:none;
+    background:linear-gradient(92deg,var(--a),var(--b) 55%,var(--c));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .back{text-decoration:none;color:var(--dim);font-size:14px;font-weight:600;
+    border:1px solid var(--line);padding:9px 16px;border-radius:999px;transition:.22s;backdrop-filter:blur(10px)}
+  .back:hover{color:var(--ink);border-color:rgba(150,170,255,.42)}
+
+  header{padding:44px 0 12px}
+  .label{display:inline-flex;align-items:center;gap:9px;font-size:11.5px;font-weight:800;
+    letter-spacing:.15em;text-transform:uppercase;color:var(--amber);
+    border:1px solid rgba(217,154,78,.4);background:rgba(217,154,78,.09);
+    padding:7px 14px;border-radius:999px}
+  h1{font-size:clamp(36px,7vw,62px);line-height:1.02;letter-spacing:-.035em;font-weight:800;margin:20px 0 0}
+  .tagline{margin-top:18px;color:var(--dim);font-size:clamp(17px,2.3vw,20px);max-width:52ch}
+  .facts{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;margin-top:38px;
+    background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  @media(min-width:680px){.facts{grid-template-columns:repeat(4,1fr)}}
+  .facts div{background:#080a14;padding:18px 20px}
+  .facts dt{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:700}
+  .facts dd{font-size:16px;font-weight:700;margin-top:6px;letter-spacing:-.01em}
+
+  .frame{margin-top:44px;border:1px solid var(--line);border-radius:20px;overflow:hidden;
+    background:#0d0b09;box-shadow:0 40px 90px -40px rgba(0,0,0,.9)}
+  .chrome{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);
+    background:rgba(255,255,255,.03)}
+  .chrome i{width:11px;height:11px;border-radius:50%;background:#2b3050;display:block}
+  .chrome .url{flex:1;text-align:center;font-size:12px;color:var(--dim);letter-spacing:.02em}
+  .stage{position:relative;aspect-ratio:16/10;overflow:hidden;background:#0d0b09}
+  .stage iframe{position:absolute;top:0;left:0;width:1280px;height:800px;border:0;
+    transform-origin:0 0;transform:scale(.5);pointer-events:none}
+  .frame .foot{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;
+    padding:16px 18px;border-top:1px solid var(--line);font-size:13.5px;color:var(--dim)}
+  .btn{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-weight:700;font-size:15px;
+    padding:13px 22px;border-radius:12px;transition:.22s;border:1px solid transparent}
+  .btn.primary{color:#05060a;background:linear-gradient(96deg,var(--a),var(--b) 60%,var(--c));
+    box-shadow:0 10px 34px -10px rgba(140,130,255,.7)}
+  .btn.primary:hover{transform:translateY(-2px)}
+  .btn.ghost{border-color:var(--line);color:var(--ink);background:var(--glass)}
+  .btn.ghost:hover{border-color:rgba(150,170,255,.45)}
+
+  section{padding:60px 0}
+  .kick{font-size:11.5px;letter-spacing:.17em;text-transform:uppercase;color:var(--a);font-weight:800}
+  h2{font-size:clamp(26px,4.4vw,38px);line-height:1.12;letter-spacing:-.028em;font-weight:800;margin-top:12px}
+  h3{font-size:19px;font-weight:700;letter-spacing:-.012em}
+  p.body{color:var(--dim);margin-top:16px;font-size:17px;max-width:66ch}
+  p.body + p.body{margin-top:14px}
+  p.body b{color:var(--ink);font-weight:600}
+
+  .dec{margin-top:36px;display:grid;gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:18px;overflow:hidden}
+  .dec article{background:#080a14;padding:26px 24px;transition:.25s}
+  .dec article:hover{background:#0b0e1c}
+  .dec .no{font-size:11.5px;font-weight:800;letter-spacing:.14em;color:var(--b)}
+  .dec h3{margin-top:9px}
+  .dec p{color:var(--dim);margin-top:9px;font-size:15.5px;max-width:64ch}
+  .dec .why{margin-top:12px;padding-left:14px;border-left:2px solid rgba(217,154,78,.55);
+    color:#e4d7c4;font-size:14.5px}
+  .dec .why b{color:var(--amber);font-weight:700}
+
+  .nums{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:34px}
+  @media(min-width:720px){.nums{grid-template-columns:repeat(4,1fr)}}
+  .num{border:1px solid var(--line);background:var(--glass);border-radius:16px;padding:22px;backdrop-filter:blur(14px)}
+  .num b{display:block;font-size:clamp(26px,4.6vw,34px);font-weight:800;letter-spacing:-.04em;
+    background:linear-gradient(96deg,var(--a),var(--b) 60%,var(--c));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .num span{display:block;font-size:13px;color:var(--dim);margin-top:7px;line-height:1.45}
+
+  .note{border:1px solid var(--line);background:var(--glass);border-radius:16px;padding:22px 24px;
+    margin-top:34px;backdrop-filter:blur(14px);color:var(--dim);font-size:15.5px}
+  .note b{color:var(--ink)}
+
+  .cta{text-align:center;padding:80px 0 30px;border-top:1px solid var(--line);margin-top:40px}
+  .cta h2{max-width:18ch;margin-inline:auto}
+  .cta .row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:28px}
+  footer{padding:26px 0 46px;color:var(--dim);font-size:13.5px;text-align:center}
+  .rv{opacity:0;transform:translateY(22px);transition:opacity .75s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1)}
+  .rv.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="../../index.html">RAY</a>
+  <a class="back" href="../../index.html">← All work</a>
+</nav>
+
+<div class="wrap">
+
+  <header>
+    <span class="label">Concept build · not a paying client</span>
+    <h1>Ironside Barber Co.</h1>
+    <p class="tagline">A barbershop site that sells atmosphere first and answers "are you open right now" second — in 5.5&nbsp;KB, with no libraries and no stock photography.</p>
+    <dl class="facts">
+      <div><dt>Type</dt><dd>Local service business</dd></div>
+      <div><dt>Build time</dt><dd>About 1 day</dd></div>
+      <div><dt>Stack</dt><dd>One HTML file</dd></div>
+      <div><dt>Dependencies</dt><dd>Zero</dd></div>
+    </dl>
+
+    <div class="frame">
+      <div class="chrome"><i></i><i></i><i></i><span class="url">ironsidebarber.com</span></div>
+      <div class="stage"><iframe src="../../barbershop/" loading="lazy" tabindex="-1" scrolling="no" title="Ironside Barber Co. live preview"></iframe></div>
+      <div class="foot">
+        <span>Live and interactive — click through it</span>
+        <a class="btn primary" href="../../barbershop/" target="_blank" rel="noopener">Open the site ↗</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="rv">
+    <div class="kick">The brief</div>
+    <h2>What a barbershop actually needs.</h2>
+    <p class="body">Most barbershop websites fail the same way: they're a template with a stock photo of a man in a cape, three paragraphs about "passion for the craft," and a phone number buried in the footer. They look like every other shop in the city.</p>
+    <p class="body">But almost everyone landing on a barbershop site wants one of exactly three things: <b>what does a cut cost, are you open right now, and how do I get an appointment.</b> Everything else is decoration. So I built around those three, and spent the remaining effort on making it feel like a specific place rather than a generic one.</p>
+  </section>
+
+  <section class="rv">
+    <div class="kick">Decisions</div>
+    <h2>Six choices, and why.</h2>
+    <div class="dec">
+      <article>
+        <div class="no">01</div>
+        <h3>Dark and warm, not clean and corporate</h3>
+        <p>Near-black background, cream text, amber and brick accents, a serif display face, and a fine film grain over everything.</p>
+        <div class="why"><b>Why:</b> a barbershop sells a room you sit in for forty minutes. Bright white and blue reads like a dentist. The palette had to feel like leather, wood and warm light.</div>
+      </article>
+      <article>
+        <div class="no">02</div>
+        <h3>The price list reads like the one on the wall</h3>
+        <p>Service name on the left, leader dots across, price on the right — the format of a printed menu, not a pricing table with feature checkmarks.</p>
+        <div class="why"><b>Why:</b> people already know how to read this. It also signals "these are the prices, there is no package upsell," which is the actual promise.</div>
+      </article>
+      <article>
+        <div class="no">03</div>
+        <h3>Today's hours highlight themselves</h3>
+        <p>The hours table checks the day of the week on load and marks the current row in amber.</p>
+        <div class="why"><b>Why:</b> "are you open" is the single most common reason someone opens a local business site on a phone. Answering it without making them count rows is four lines of JavaScript.</div>
+      </article>
+      <article>
+        <div class="no">04</div>
+        <h3>The booking form is four fields</h3>
+        <p>Name, phone, service, preferred day. That's it — no email, no address, no account, no "how did you hear about us."</p>
+        <div class="why"><b>Why:</b> every extra field loses bookings. The shop only needs enough to text back and confirm; anything more is asking the customer to do the shop's admin.</div>
+      </article>
+      <article>
+        <div class="no">05</div>
+        <h3>Drawn, not photographed</h3>
+        <p>The barber chair and the striped pole are hand-built SVG. No photo library, no image files at all.</p>
+        <div class="why"><b>Why:</b> stock barbershop photos are instantly recognisable as stock, and they're the fastest way to look like a template. Vector art loads instantly, stays sharp on any screen, and belongs to this shop alone. Real client photos would replace it on a live job.</div>
+      </article>
+      <article>
+        <div class="no">06</div>
+        <h3>The phone number never leaves the screen</h3>
+        <p>A brick-red bar pinned above the navigation carries the number and "walk-ins welcome" on every screen size.</p>
+        <div class="why"><b>Why:</b> despite the booking form, most barbershop appointments still get made by phone. The form is for people who hate calling; the bar is for everyone else.</div>
+      </article>
+    </div>
+  </section>
+
+  <section class="rv">
+    <div class="kick">The numbers</div>
+    <h2>Fast because there's nothing in it.</h2>
+    <div class="nums">
+      <div class="num"><b>5.5 KB</b><span>Gzipped, whole page</span></div>
+      <div class="num"><b>1</b><span>HTTP request, total</span></div>
+      <div class="num"><b>0</b><span>External requests, fonts or CDNs</span></div>
+      <div class="num"><b>0</b><span>Frameworks or libraries</span></div>
+    </div>
+    <p class="body">Everything — layout, illustration, interaction — is one HTML file. No React, no jQuery, no font service, no image hosting, no cookie banner because there's nothing tracking anyone.</p>
+    <p class="body">That's not minimalism for its own sake. A barbershop's customers are standing on a street corner on mobile data. A page that arrives in one request beats a beautiful page that arrives in forty.</p>
+  </section>
+
+  <section class="rv">
+    <div class="kick">Honest notes</div>
+    <h2>What this is and isn't.</h2>
+    <div class="note">
+      <p><b>Ironside Barber Co. is not a real business.</b> This is a concept build — a demonstration of how I'd approach a barbershop site, using invented details so I could design the whole thing rather than half of it. The reviews, the address and the barbers are placeholders.</p>
+      <p style="margin-top:14px">On a real job, the structure and the craft stay exactly the same. What changes is that the photos, the prices, the names and the hours are yours, and the booking form posts to your inbox instead of showing a demo confirmation.</p>
+    </div>
+  </section>
+
+  <section class="cta rv">
+    <div class="kick">Want one</div>
+    <h2>Yours can look like this by Thursday.</h2>
+    <p class="body" style="margin:16px auto 0;text-align:left;max-width:48ch">$150 flat, 48 hours, and you don't pay until you've seen it working.</p>
+    <div class="row">
+      <a class="btn primary" id="mail" href="#">Get your site built →</a>
+      <a class="btn ghost" href="../cedar-stone/index.html">Next case study →</a>
+    </div>
+  </section>
+
+  <footer>© <span id="yr"></span> RAY · Concept build, not a paying client</footer>
+
+</div>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  document.getElementById('mail').href = 'mailto:rayf24241@gmail.com?subject=' +
+    encodeURIComponent('I want a website') + '&body=' +
+    encodeURIComponent("Hi — here's my business:\n\nWhat we do:\nBusiness name:\nPhone / hours:\n");
+
+  function fit(){
+    document.querySelectorAll('.stage iframe').forEach(function (f) {
+      var w = f.parentElement.clientWidth;
+      if (w) f.style.transform = 'scale(' + (w / 1280) + ')';
+    });
+  }
+  addEventListener('resize', fit, {passive:true});
+  addEventListener('load', fit);
+  fit();
+
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, {threshold:.1});
+  document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+</script>
+</body>
+</html>

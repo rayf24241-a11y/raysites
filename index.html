@@ -140,11 +140,20 @@
 
   /* ---------- work ---------- */
   .work{
-    display:block; text-decoration:none; color:inherit;
+    display:flex; flex-direction:column; color:inherit;
     border:1px solid var(--line); border-radius:20px; overflow:hidden;
     background:var(--glass); backdrop-filter:blur(18px); transition:.3s;
   }
   .work:hover{transform:translateY(-4px); border-color:rgba(150,170,255,.45)}
+  .shotlink{display:block; text-decoration:none}
+  .work .meta{display:flex; flex-direction:column; flex:1}
+  .work .links{
+    display:flex; flex-wrap:wrap; gap:16px; margin-top:auto; padding-top:16px;
+  }
+  .work .links a{
+    font-size:13.5px; font-weight:700; text-decoration:none; color:var(--a); transition:.2s;
+  }
+  .work .links a:hover{color:var(--ink)}
   /* live preview of the real demo site, scaled down in-place */
   .shot{aspect-ratio:16/10; background:#080a14; position:relative; overflow:hidden}
   .shot iframe{
@@ -233,18 +242,37 @@
     <h2>These are live. Click them.</h2>
     <p class="sub">Not screenshots — the actual sites, running right here in the page. Open any of them and click around.</p>
     <div class="grid g3">
-      <a class="work" href="barbershop/" data-demo>
-        <div class="shot"><span class="tag">Live</span><iframe src="barbershop/" loading="lazy" tabindex="-1" title="Ironside Barber Co. demo" scrolling="no"></iframe></div>
-        <div class="meta"><h3>Ironside Barber Co.</h3><p>Booking form, price menu, live hours — 1 day</p></div>
-      </a>
-      <a class="work" href="landscaping/" data-demo>
-        <div class="shot"><span class="tag">Live</span><iframe src="landscaping/" loading="lazy" tabindex="-1" title="Cedar &amp; Stone Landscaping demo" scrolling="no"></iframe></div>
-        <div class="meta"><h3>Cedar &amp; Stone Landscaping</h3><p>Quote form, service pricing, project gallery — 2 days</p></div>
-      </a>
-      <a class="work" href="#top" data-demo>
+      <div class="work">
+        <a class="shotlink" href="work/ironside/" aria-label="Ironside Barber Co. case study">
+          <div class="shot"><span class="tag">Live</span><iframe src="barbershop/" loading="lazy" tabindex="-1" title="Ironside Barber Co. demo" scrolling="no"></iframe></div>
+        </a>
+        <div class="meta">
+          <h3>Ironside Barber Co.</h3><p>Booking form, price menu, live hours — 1 day</p>
+          <div class="links">
+            <a href="work/ironside/">Case study →</a>
+            <a href="barbershop/" target="_blank" rel="noopener">Live site ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="work">
+        <a class="shotlink" href="work/cedar-stone/" aria-label="Cedar and Stone Landscaping case study">
+          <div class="shot"><span class="tag">Live</span><iframe src="landscaping/" loading="lazy" tabindex="-1" title="Cedar &amp; Stone Landscaping demo" scrolling="no"></iframe></div>
+        </a>
+        <div class="meta">
+          <h3>Cedar &amp; Stone Landscaping</h3><p>Quote form, service pricing, project gallery — 2 days</p>
+          <div class="links">
+            <a href="work/cedar-stone/">Case study →</a>
+            <a href="landscaping/" target="_blank" rel="noopener">Live site ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="work">
         <div class="shot art"><span class="tag">This page</span><b>Raymarched WebGL · 0 libraries</b></div>
-        <div class="meta"><h3>You're looking at it</h3><p>Real-time 3D background, no frameworks — 1 hour</p></div>
-      </a>
+        <div class="meta">
+          <h3>You're looking at it</h3><p>Real-time 3D background, no frameworks — 1 hour</p>
+          <div class="links"><a href="#contact">Get one like it →</a></div>
+        </div>
+      </div>
     </div>
   </section>
 

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RAY — Websites, $150 flat, live in 48 hours</title>
+<meta name="description" content="Custom websites for small businesses. $150 flat. Live in 48 hours. You pay after you see it.">
+<meta property="og:title" content="RAY — Websites, $150 flat">
+<meta property="og:description" content="Custom websites for small businesses. Live in 48 hours. You pay after you see it.">
+<meta name="theme-color" content="#05060a">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#05060a;
+    --ink:#f2f4ff;
+    --dim:#9aa3c4;
+    --line:rgba(150,170,255,.14);
+    --glass:rgba(12,16,32,.55);
+    --a:#7af0ff;
+    --b:#b98cff;
+    --c:#ff7ac8;
+    --max:1080px;
+  }
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font:400 16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Inter,Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* ---------- 3D layer ---------- */
+  #gl{
+    position:fixed; inset:0; width:100%; height:100%;
+    display:block; z-index:0;
+    background:
+      radial-gradient(120% 90% at 50% 0%, #171a3a 0%, #08091a 45%, #04050c 100%);
+  }
+  #veil{
+    position:fixed; inset:0; z-index:1; pointer-events:none;
+    background:
+      radial-gradient(90% 60% at 50% 8%, rgba(5,6,10,0) 0%, rgba(5,6,10,.35) 55%, rgba(5,6,10,.82) 100%);
+  }
+  /* ---------- layout ---------- */
+  .wrap{position:relative; z-index:2; max-width:var(--max); margin:0 auto; padding:0 22px}
+  nav{
+    position:relative; z-index:3; display:flex; align-items:center; justify-content:space-between;
+    max-width:var(--max); margin:0 auto; padding:26px 22px;
+  }
+  .logo{
+    font-weight:800; letter-spacing:.28em; font-size:15px;
+    background:linear-gradient(92deg,var(--a),var(--b) 55%,var(--c));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .navlink{
+    color:var(--dim); text-decoration:none; font-size:14px; font-weight:600;
+    border:1px solid var(--line); padding:9px 16px; border-radius:999px;
+    backdrop-filter:blur(10px); transition:.25s;
+  }
+  .navlink:hover{color:var(--ink); border-color:rgba(150,170,255,.4); transform:translateY(-1px)}
+
+  /* ---------- hero ---------- */
+  header{min-height:clamp(560px,92svh,980px); display:flex; flex-direction:column; justify-content:center; padding:40px 0 70px}
+  .badge{
+    display:inline-flex; align-items:center; gap:9px; align-self:flex-start;
+    font-size:12.5px; font-weight:700; letter-spacing:.09em; text-transform:uppercase;
+    color:#cfe3ff; border:1px solid var(--line); background:var(--glass);
+    padding:9px 15px; border-radius:999px; backdrop-filter:blur(14px);
+  }
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--a);box-shadow:0 0 12px 2px var(--a);animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.7)}}
+  h1{
+    font-size:clamp(42px,9.2vw,104px); line-height:.96; letter-spacing:-.035em; font-weight:800;
+    margin:26px 0 0; max-width:14ch;
+  }
+  h1 em{
+    font-style:normal;
+    background:linear-gradient(96deg,var(--a) 0%,var(--b) 48%,var(--c) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .lede{margin-top:24px; font-size:clamp(17px,2.4vw,21px); color:var(--dim); max-width:52ch}
+  .lede b{color:var(--ink); font-weight:600}
+  .cta{display:flex; flex-wrap:wrap; gap:13px; margin-top:36px}
+  .btn{
+    display:inline-flex; align-items:center; gap:10px; text-decoration:none;
+    font-weight:700; font-size:15.5px; padding:15px 26px; border-radius:14px; transition:.25s;
+  }
+  .btn.primary{
+    color:#05060a; background:linear-gradient(96deg,var(--a),var(--b) 60%,var(--c));
+    box-shadow:0 10px 40px -8px rgba(140,130,255,.6);
+  }
+  .btn.primary:hover{transform:translateY(-2px); box-shadow:0 16px 50px -8px rgba(140,130,255,.8)}
+  .btn.ghost{color:var(--ink); border:1px solid var(--line); background:var(--glass); backdrop-filter:blur(14px)}
+  .btn.ghost:hover{border-color:rgba(150,170,255,.45); transform:translateY(-2px)}
+
+  .stats{display:flex; flex-wrap:wrap; gap:34px; margin-top:56px}
+  .stat .n{font-size:clamp(26px,4vw,38px); font-weight:800; letter-spacing:-.03em}
+  .stat .l{font-size:12.5px; color:var(--dim); text-transform:uppercase; letter-spacing:.11em; font-weight:600; margin-top:3px}
+
+  /* ---------- sections ---------- */
+  section{padding:88px 0}
+  .kicker{
+    font-size:12.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--a);
+  }
+  h2{font-size:clamp(30px,5.4vw,52px); line-height:1.05; letter-spacing:-.03em; font-weight:800; margin-top:14px}
+  .sub{color:var(--dim); margin-top:16px; max-width:56ch; font-size:17px}
+
+  .grid{display:grid; gap:16px; margin-top:44px}
+  @media(min-width:720px){ .g3{grid-template-columns:repeat(3,1fr)} .g2{grid-template-columns:repeat(2,1fr)} }
+  .card{
+    border:1px solid var(--line); background:var(--glass); backdrop-filter:blur(18px);
+    border-radius:20px; padding:28px; position:relative; overflow:hidden; transition:.3s;
+  }
+  .card:hover{border-color:rgba(150,170,255,.4); transform:translateY(-3px)}
+  .card h3{font-size:19px; font-weight:700; letter-spacing:-.01em}
+  .card p{color:var(--dim); margin-top:10px; font-size:15px}
+  .num{
+    font-size:12px; font-weight:800; letter-spacing:.14em; color:var(--b);
+  }
+
+  ul.checks{list-style:none; margin-top:26px; display:grid; gap:13px}
+  ul.checks li{display:flex; gap:13px; align-items:flex-start; font-size:16.5px}
+  ul.checks svg{flex:0 0 auto; margin-top:3px}
+
+  /* ---------- price ---------- */
+  .pricebox{
+    border:1px solid rgba(150,170,255,.3); border-radius:26px; padding:38px 30px;
+    background:linear-gradient(180deg,rgba(30,26,66,.72),rgba(10,12,28,.72));
+    backdrop-filter:blur(20px); box-shadow:0 30px 90px -30px rgba(120,110,255,.55);
+  }
+  .price{display:flex; align-items:baseline; gap:12px; margin-top:6px}
+  .price .amt{font-size:clamp(56px,12vw,88px); font-weight:800; letter-spacing:-.05em; line-height:1;
+    background:linear-gradient(96deg,var(--a),var(--b) 55%,var(--c));
+    -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .price .per{color:var(--dim); font-weight:600}
+  .compare{margin-top:30px; display:grid; gap:11px; border-top:1px solid var(--line); padding-top:26px}
+  .row{display:flex; justify-content:space-between; gap:16px; font-size:15px; color:var(--dim)}
+  .row s{opacity:.65}
+  .row b{color:var(--ink)}
+
+  /* ---------- work ---------- */
+  .work{
+    display:block; text-decoration:none; color:inherit;
+    border:1px solid var(--line); border-radius:20px; overflow:hidden;
+    background:var(--glass); backdrop-filter:blur(18px); transition:.3s;
+  }
+  .work:hover{transform:translateY(-4px); border-color:rgba(150,170,255,.45)}
+  .shot{height:186px; background:linear-gradient(135deg,#1b1f45,#2a1d4d 55%,#3d1f45); position:relative}
+  .shot::after{
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(70% 90% at 25% 15%,rgba(122,240,255,.35),transparent 60%),
+               radial-gradient(70% 90% at 85% 90%,rgba(255,122,200,.3),transparent 60%);
+  }
+  .work .meta{padding:20px 22px}
+  .work .meta h3{font-size:17px;font-weight:700}
+  .work .meta p{color:var(--dim); font-size:14px; margin-top:5px}
+
+  /* ---------- final ---------- */
+  .final{text-align:center; padding:104px 0 40px}
+  .final h2{max-width:18ch; margin-inline:auto}
+  footer{
+    border-top:1px solid var(--line); margin-top:60px; padding:28px 0 46px;
+    display:flex; flex-wrap:wrap; gap:12px; justify-content:space-between;
+    color:var(--dim); font-size:13.5px;
+  }
+  a{color:inherit}
+  .reveal{opacity:0; transform:translateY(26px); transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1; transform:none}
+  @media(prefers-reduced-motion:reduce){ .reveal{opacity:1;transform:none;transition:none} .dot{animation:none} }
+</style>
+</head>
+<body>
+
+<canvas id="gl"></canvas>
+<div id="veil"></div>
+
+<nav>
+  <div class="logo">RAY</div>
+  <a class="navlink" id="navmail" href="#contact">Get a site →</a>
+</nav>
+
+<div class="wrap">
+
+  <header>
+    <span class="badge"><span class="dot"></span> This page was built in one hour</span>
+    <h1>I build websites that <em>don't look cheap.</em></h1>
+    <p class="lede"><b>$150 flat.</b> Live in 48 hours. You see it working first — <b>then</b> you pay.</p>
+    <div class="cta">
+      <a class="btn primary" id="cta1" href="#contact">Get your site built →</a>
+      <a class="btn ghost" href="#work">See the work</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="n">48h</div><div class="l">Turnaround</div></div>
+      <div class="stat"><div class="n">$150</div><div class="l">Flat, no hourly</div></div>
+      <div class="stat"><div class="n">$0</div><div class="l">Up front</div></div>
+    </div>
+  </header>
+
+  <section id="work" class="reveal">
+    <div class="kicker">Recent work</div>
+    <h2>Real sites, built fast.</h2>
+    <p class="sub">Every one of these went from first message to live in under two days.</p>
+    <div class="grid g3">
+      <a class="work" href="#" data-demo><div class="shot"></div><div class="meta"><h3>Barbershop</h3><p>Booking + gallery — 1 day</p></div></a>
+      <a class="work" href="#" data-demo><div class="shot"></div><div class="meta"><h3>Landscaping Co.</h3><p>Quote form + service pages — 2 days</p></div></a>
+      <a class="work" href="#" data-demo><div class="shot"></div><div class="meta"><h3>This page</h3><p>Live 3D, zero libraries — 1 hour</p></div></a>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="kicker">How it works</div>
+    <h2>Three steps. No meetings.</h2>
+    <div class="grid g3">
+      <div class="card"><div class="num">STEP 01</div><h3>Tell me about it</h3><p>Send your business name, photos, hours and what you do. One message. No calls, no forms.</p></div>
+      <div class="card"><div class="num">STEP 02</div><h3>I build it in 48h</h3><p>Custom built — not a template. Works on phones. I send you a live link when it's done.</p></div>
+      <div class="card"><div class="num">STEP 03</div><h3>You pay after</h3><p>Look at it. Ask for changes. Only when you're happy do you pay, and it goes on your domain.</p></div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="grid g2">
+      <div>
+        <div class="kicker">The price</div>
+        <h2>$150. That's the whole thing.</h2>
+        <p class="sub">No hourly rate. No "starting at." No surprise invoice at the end. One number, agreed before I start a single line.</p>
+        <ul class="checks">
+          <li><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#7af0ff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Up to 5 custom pages</li>
+          <li><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#7af0ff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Looks right on phone and desktop</li>
+          <li><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#7af0ff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Contact form that emails you</li>
+          <li><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#7af0ff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Set up on your own domain</li>
+          <li><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#7af0ff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> A round of changes included</li>
+        </ul>
+      </div>
+      <div class="pricebox">
+        <div class="kicker">Flat rate</div>
+        <div class="price"><span class="amt">$150</span><span class="per">/ site</span></div>
+        <p class="sub" style="margin-top:14px">Paid after delivery. Nothing up front, ever.</p>
+        <div class="compare">
+          <div class="row"><span>A web design agency</span><s>$3,000+</s></div>
+          <div class="row"><span>Squarespace, per year</span><s>$400 + you build it</s></div>
+          <div class="row"><span>Freelancer, hourly</span><s>$60/hr, open-ended</s></div>
+          <div class="row" style="color:var(--ink)"><span><b>Me</b></span><b>$150 flat</b></div>
+        </div>
+        <a class="btn primary" id="cta2" href="#contact" style="margin-top:26px;width:100%;justify-content:center">Start my site →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="final reveal" id="contact">
+    <div class="kicker">Let's go</div>
+    <h2>Send me one message and you'll have a site by Thursday.</h2>
+    <p class="sub" style="margin:16px auto 0">Tell me what your business does. I'll take it from there.</p>
+    <div class="cta" style="justify-content:center">
+      <a class="btn primary" id="cta3" href="#">Email me →</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>© <span id="yr"></span> RAY — built in one hour, on purpose.</span>
+    <span>Websites · $150 flat · 48 hours</span>
+  </footer>
+
+</div>
+
+<script>
+/* ============================================================
+   EDIT THIS — everything you need to change is right here.
+   ============================================================ */
+const CONFIG = {
+  email: 'rayf24241@gmail.com',
+  // Paste your live demo links here (in order of the 3 cards):
+  demos: [
+    'https://example.com',
+    'https://example.com',
+    'https://example.com'
+  ]
+};
+/* ========================================================== */
+
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+const mailto = 'mailto:' + CONFIG.email + '?subject=' +
+  encodeURIComponent('I want a website') + '&body=' +
+  encodeURIComponent("Hi — here's my business:\n\nWhat we do:\nBusiness name:\nPhone / hours:\n");
+['cta1','cta2','cta3','navmail'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.href = mailto;
+});
+document.querySelectorAll('[data-demo]').forEach((a,i) => {
+  const url = CONFIG.demos[i];
+  if (url && url !== 'https://example.com') { a.href = url; a.target = '_blank'; a.rel = 'noopener'; }
+});
+
+/* reveal on scroll */
+const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('in')), {threshold:.12});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ============================================================
+   3D BACKGROUND — raymarched gyroid tunnel. Pure WebGL, no libs.
+   ============================================================ */
+(function () {
+  const cv = document.getElementById('gl');
+  const gl = cv.getContext('webgl', {antialias:false, alpha:true, powerPreference:'high-performance'})
+          || cv.getContext('experimental-webgl');
+  if (!gl) return;                                   // CSS gradient stays as the fallback
+
+  const VS = `
+    attribute vec2 p;
+    void main(){ gl_Position = vec4(p, 0.0, 1.0); }
+  `;
+
+  const FS = `
+    precision highp float;
+    uniform vec2  uRes;
+    uniform float uTime;
+    uniform vec2  uMouse;
+
+    mat2 rot(float a){ float c = cos(a), s = sin(a); return mat2(c, -s, s, c); }
+
+    // gyroid: minimal surface, gives that alien-lattice look for ~1 line of math
+    float gyroid(vec3 p, float s, float t){
+      p *= s;
+      return abs(dot(sin(p), cos(p.zxy))) / s - t;
+    }
+
+    float map(vec3 p){
+      vec3 q = p;
+      q.xy *= rot(q.z * 0.14 + uTime * 0.06);          // slow twist down the tunnel
+      float lattice = gyroid(q, 1.35, 0.055);
+      float detail  = gyroid(q + 3.7, 4.9, 0.028);
+      lattice -= detail * 0.14;                         // fine surface noise
+      float bore = 1.15 - length(q.xy);                 // keep a clear flight path
+      return max(lattice, bore) * 0.62;
+    }
+
+    vec3 normal(vec3 p){
+      vec2 e = vec2(0.0016, 0.0);
+      return normalize(vec3(
+        map(p + e.xyy) - map(p - e.xyy),
+        map(p + e.yxy) - map(p - e.yxy),
+        map(p + e.yyx) - map(p - e.yyx)));
+    }
+
+    // iq cosine palette
+    vec3 pal(float t){
+      return 0.5 + 0.5 * cos(6.28318 * (vec3(0.98, 0.72, 0.52) * t + vec3(0.02, 0.30, 0.62)));
+    }
+
+    void main(){
+      vec2 uv = (gl_FragCoord.xy - 0.5 * uRes) / uRes.y;
+
+      float z = uTime * 1.15;
+      vec3 ro = vec3(0.0, 0.0, z);
+      vec3 rd = normalize(vec3(uv, 1.25));
+      rd.xy *= rot(sin(uTime * 0.13) * 0.22);
+      rd.yz *= rot(uMouse.y * 0.20);                    // gentle mouse parallax
+      rd.xz *= rot(uMouse.x * 0.20);
+
+      float t = 0.0, d = 0.0, glow = 0.0;
+      bool hit = false;
+      for (int i = 0; i < 78; i++){
+        vec3 p = ro + rd * t;
+        d = map(p);
+        glow += 0.014 / (0.02 + abs(d) * 22.0);         // volumetric-ish bloom
+        if (d < 0.0016){ hit = true; break; }
+        if (t > 22.0) break;
+        t += d;
+      }
+
+      vec3 col = vec3(0.0);
+
+      if (hit){
+        vec3 p = ro + rd * t;
+        vec3 n = normal(p);
+        vec3 lig = normalize(vec3(0.6, 0.75, -0.4));
+        float dif = max(dot(n, lig), 0.0);
+        float fre = pow(1.0 - max(dot(n, -rd), 0.0), 3.2);
+        float spe = pow(max(dot(reflect(-lig, n), -rd), 0.0), 26.0);
+
+        vec3 base = pal(p.z * 0.045 + uTime * 0.03 + fre * 0.35);
+        col  = base * (0.16 + dif * 0.72);
+        col += base * fre * 1.35;                        // iridescent rim
+        col += vec3(0.85, 0.93, 1.0) * spe * 0.55;
+        col *= exp(-t * 0.115);                          // distance fog
+      }
+
+      col += pal(uTime * 0.05 + 0.35) * glow * 0.5;      // the glow that sells it
+      col = pow(max(col, 0.0), vec3(0.82));              // lift
+      col = col / (1.0 + col * 0.55);                    // soft tonemap
+      col += (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) * 0.018;
+
+      gl_FragColor = vec4(col, 1.0);
+    }
+  `;
+
+  function sh(type, src){
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)){ console.error(gl.getShaderInfoLog(s)); return null; }
+    return s;
+  }
+  const vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FS);
+  if (!vs || !fs) return;
+
+  const prog = gl.createProgram();
+  gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)){ console.error(gl.getProgramInfoLog(prog)); return; }
+  gl.useProgram(prog);
+
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, 'p');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+  const uRes = gl.getUniformLocation(prog, 'uRes');
+  const uTime = gl.getUniformLocation(prog, 'uTime');
+  const uMouse = gl.getUniformLocation(prog, 'uMouse');
+
+  let mx = 0, my = 0, tx = 0, ty = 0;
+  addEventListener('pointermove', e => {
+    tx = (e.clientX / innerWidth) * 2 - 1;
+    ty = (e.clientY / innerHeight) * 2 - 1;
+  }, {passive:true});
+
+  function resize(){
+    const dpr = Math.min(devicePixelRatio || 1, 1.5);
+    cv.width  = Math.floor(innerWidth  * dpr);
+    cv.height = Math.floor(innerHeight * dpr);
+    gl.viewport(0, 0, cv.width, cv.height);
+  }
+  addEventListener('resize', resize, {passive:true});
+  resize();
+
+  const slow = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const t0 = performance.now();
+  (function loop(now){
+    requestAnimationFrame(loop);
+    mx += (tx - mx) * 0.045; my += (ty - my) * 0.045;
+    const t = ((now || t0) - t0) / 1000 * (slow ? 0.25 : 1);
+    gl.uniform2f(uRes, cv.width, cv.height);
+    gl.uniform1f(uTime, t);
+    gl.uniform2f(uMouse, mx, my);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  })(t0);
+})();
+</script>
+</body>
+</html>

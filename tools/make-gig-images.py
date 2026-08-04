@@ -131,9 +131,14 @@ def card_offer(path):
     centre(d, 100, "Custom Website", font(BOLD, 82), hx("#f4f6ff"))
     centre(d, 186, "in 48 Hours", font(BOLD, 82), hx("#f4f6ff"))
     browser(d, 300, 300, 680, 330, "#1d2450")
-    d.rounded_rectangle([300, 668, 980, 736], radius=16, fill=(255, 255, 255, 24),
+    strip = "FROM $75   ·   CUSTOM BUILT, NOT A TEMPLATE"
+    sf = font(BOLD, 27)
+    sw = d.textlength(strip, font=sf)
+    x0, x1 = 300, 980
+    assert sw < (x1 - x0) - 48, "price strip overflows its pill: %.0f px" % sw
+    d.rounded_rectangle([x0, 668, x1, 736], radius=16, fill=(255, 255, 255, 24),
                         outline=hx("#7af0ff") + (150,), width=2)
-    centre(d, 686, "FROM $75   ·   CUSTOM BUILT, NOT A TEMPLATE", font(BOLD, 30), hx("#eaf3ff"))
+    d.text(((W - sw) / 2, 689), strip, font=sf, fill=hx("#eaf3ff"))
     img.save(os.path.join(ROOT, path), "PNG", optimize=True)
     return path
 

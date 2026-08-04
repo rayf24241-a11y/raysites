@@ -133,7 +133,7 @@ def card_offer(path):
     browser(d, 300, 300, 680, 330, "#1d2450")
     d.rounded_rectangle([300, 668, 980, 736], radius=16, fill=(255, 255, 255, 24),
                         outline=hx("#7af0ff") + (150,), width=2)
-    centre(d, 686, "$150 FLAT   ·   YOU PAY AFTER YOU SEE IT", font(BOLD, 30), hx("#eaf3ff"))
+    centre(d, 686, "FROM $75   ·   CUSTOM BUILT, NOT A TEMPLATE", font(BOLD, 30), hx("#eaf3ff"))
     img.save(os.path.join(ROOT, path), "PNG", optimize=True)
     return path
 
@@ -167,7 +167,7 @@ def card_3d(path):
                                    (.90, .16, .42, "#c8d0dd", .26)])
     d = ImageDraw.Draw(img, "RGBA")
     f = font(BOLD, 24)
-    track(d, (72, 58), "SOMETHING MOST $150 SITES CAN'T DO", f, hx("#7af0ff"), 5)
+    track(d, (72, 58), "SOMETHING MOST CHEAP SITES CAN'T DO", f, hx("#7af0ff"), 5)
     # left column must clear the browser window at x=700
     hf = font(BOLD, 62)
     for i, line in enumerate(["Real-time 3D,", "right in the browser."]):

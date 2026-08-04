@@ -361,5 +361,141 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
   })(t0);
 })();
 </script>
+<!-- ==================== FX LAYER ==================== -->
+<style>
+  #fxp{position:fixed;top:0;left:0;height:2px;width:0;z-index:9998;pointer-events:none;
+    background:linear-gradient(90deg,#e8873c,#8e2f3f);transition:width .1s linear}
+  @media (pointer:fine){
+    html.fx-on,html.fx-on *{cursor:none!important}
+    #fxc{position:fixed;top:0;left:0;width:32px;height:32px;margin:-16px 0 0 -16px;
+      border:1.5px solid #fff;border-radius:50%;pointer-events:none;z-index:10000;
+      mix-blend-mode:difference;
+      transition:width .26s cubic-bezier(.2,.7,.2,1),height .26s cubic-bezier(.2,.7,.2,1),
+                 margin .26s cubic-bezier(.2,.7,.2,1),background .26s,opacity .26s}
+    #fxd{position:fixed;top:0;left:0;width:5px;height:5px;margin:-2.5px 0 0 -2.5px;
+      background:#fff;border-radius:50%;pointer-events:none;z-index:10001;mix-blend-mode:difference}
+    #fxc.hot{width:62px;height:62px;margin:-31px 0 0 -31px;background:#fff;opacity:.5}
+  }
+  .fxch{display:inline-block;opacity:0;transform:translateY(.75em) rotate(5deg);
+    transition:opacity .62s cubic-bezier(.2,.75,.2,1),transform .62s cubic-bezier(.2,.75,.2,1)}
+  .fx-lit .fxch{opacity:1;transform:none}
+  .fx-stag>*{opacity:0;transform:translateY(26px);
+    transition:opacity .75s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1)}
+  .fx-stag.fx-lit>*{opacity:1;transform:none}
+  .fx-tilt{transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+  @media (prefers-reduced-motion:reduce){
+    .fxch,.fx-stag>*{opacity:1!important;transform:none!important;transition:none!important}
+  }
+</style>
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine   = matchMedia('(pointer:fine)').matches;
+  var d = document, b = d.body;
+
+  /* --- scroll progress --- */
+  var p = d.createElement('div'); p.id = 'fxp'; b.appendChild(p);
+  function prog(){ var h = d.documentElement.scrollHeight - innerHeight;
+    p.style.width = (h > 0 ? Math.min(100, scrollY / h * 100) : 0) + '%'; }
+  addEventListener('scroll', prog, {passive:true}); addEventListener('resize', prog, {passive:true}); prog();
+
+  /* --- trailing cursor (desktop pointers only) --- */
+  if (fine && !reduce){
+    d.documentElement.classList.add('fx-on');
+    var c = d.createElement('div'); c.id = 'fxc';
+    var dot = d.createElement('div'); dot.id = 'fxd';
+    b.appendChild(c); b.appendChild(dot);
+    var x = innerWidth/2, y = innerHeight/2, cx = x, cy = y;
+    addEventListener('pointermove', function(e){ x = e.clientX; y = e.clientY;
+      dot.style.transform = 'translate(' + x + 'px,' + y + 'px)'; }, {passive:true});
+    (function l(){ requestAnimationFrame(l);
+      cx += (x-cx)*0.17; cy += (y-cy)*0.17;
+      c.style.transform = 'translate(' + cx + 'px,' + cy + 'px)'; })();
+    var HOT = 'a,button,input,select,textarea,summary,.card,.work';
+    d.addEventListener('pointerover', function(e){
+      if (e.target.closest && e.target.closest(HOT)) c.classList.add('hot'); }, true);
+    d.addEventListener('pointerout', function(e){
+      if (e.target.closest && e.target.closest(HOT)) c.classList.remove('hot'); }, true);
+  }
+
+  /* --- headline splits into letters, but never into gradient-clipped text
+         (its children would inherit transparent fill and vanish) --- */
+  function split(node){
+    [].slice.call(node.childNodes).forEach(function(n){
+      if (n.nodeType === 3){
+        if (!n.textContent) return;
+        var f = d.createDocumentFragment();
+        n.textContent.split('').forEach(function(ch){
+          var s = d.createElement('span'); s.className = 'fxch';
+          s.textContent = (ch === ' ' ? ' ' : ch); f.appendChild(s);
+        });
+        node.replaceChild(f, n);
+      } else if (n.nodeType === 1 && n.tagName !== 'BR'){
+        var st = getComputedStyle(n);
+        if ((st.webkitBackgroundClip || st.backgroundClip) === 'text'){ n.className += ' fxch'; return; }
+        split(n);
+      }
+    });
+  }
+  /* Reveal animations hide content until a trigger fires. rAF and
+     IntersectionObserver do not run in a backgrounded tab, so arming them
+     there would leave the page permanently blank for anyone who opens the
+     link in a new tab. Only arm when the document is actually visible, and
+     keep a timer failsafe so nothing can ever stay hidden. */
+  var GRID = '.grid,.list,.menu,.team,.steps,.shots,.nums,.facts,.dec,.hours,.faq';
+  var h1 = d.querySelector('h1');
+
+  function revealAll(){
+    if (h1) h1.classList.add('fx-lit');
+    [].forEach.call(d.querySelectorAll('.fx-stag'), function(g){ g.classList.add('fx-lit'); });
+  }
+
+  function armReveals(){
+    if (h1){
+      var label = h1.textContent.replace(/\s+/g,' ').trim();
+      split(h1);
+      h1.setAttribute('aria-label', label);
+      [].forEach.call(h1.querySelectorAll('.fxch'), function(s,i){
+        s.setAttribute('aria-hidden','true'); s.style.transitionDelay = (i*0.02).toFixed(3) + 's'; });
+      setTimeout(function(){ h1.classList.add('fx-lit'); }, 60);   // timers fire even when rAF won't
+    }
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('fx-lit'); io.unobserve(e.target); } });
+    }, {threshold:.1});
+    [].forEach.call(d.querySelectorAll(GRID), function(g){
+      if (!g.children.length) return;
+      g.classList.add('fx-stag');
+      [].forEach.call(g.children, function(k,i){ k.style.transitionDelay = (i*0.055).toFixed(3) + 's'; });
+      io.observe(g);
+    });
+    setTimeout(revealAll, 4000);            // hard failsafe: content is never left hidden
+  }
+
+  if (!reduce && d.visibilityState === 'visible') armReveals();
+  else revealAll();                          // hidden tab or reduced motion: just show it
+
+  /* --- tilt on cards, magnetic pull on buttons --- */
+  if (fine && !reduce){
+    [].forEach.call(d.querySelectorAll('.card,.work,.b,.num'), function(el){
+      el.classList.add('fx-tilt');
+      el.addEventListener('pointermove', function(e){
+        var r = el.getBoundingClientRect();
+        var px = (e.clientX-r.left)/r.width - .5, py = (e.clientY-r.top)/r.height - .5;
+        el.style.transform = 'perspective(900px) rotateX(' + (-py*6).toFixed(2) + 'deg) rotateY(' +
+                             (px*8).toFixed(2) + 'deg) translateY(-5px)';
+      });
+      el.addEventListener('pointerleave', function(){ el.style.transform = ''; });
+    });
+    [].forEach.call(d.querySelectorAll('.btn'), function(bt){
+      bt.addEventListener('pointermove', function(e){
+        var r = bt.getBoundingClientRect();
+        bt.style.transform = 'translate(' + ((e.clientX-r.left-r.width/2)*0.16).toFixed(1) + 'px,' +
+                             ((e.clientY-r.top-r.height/2)*0.22).toFixed(1) + 'px)';
+      });
+      bt.addEventListener('pointerleave', function(){ bt.style.transform = ''; });
+    });
+  }
+})();
+</script>
 </body>
 </html>

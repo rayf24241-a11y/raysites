@@ -16,6 +16,9 @@ FONT_DIR = r"C:\Windows\Fonts" + os.sep
 BOLD, SEMI, REG = "segoeuib.ttf", "seguisb.ttf", "segoeui.ttf"
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Starting price shown on image 1. Change it here, rerun, re-upload.
+BASE_PRICE = 80
+
 
 def font(n, s):
     return ImageFont.truetype(FONT_DIR + n, s)
@@ -131,7 +134,7 @@ def card_offer(path):
     centre(d, 100, "Custom Website", font(BOLD, 82), hx("#f4f6ff"))
     centre(d, 186, "in 48 Hours", font(BOLD, 82), hx("#f4f6ff"))
     browser(d, 300, 300, 680, 330, "#1d2450")
-    strip = "FROM $75   ·   CUSTOM BUILT, NOT A TEMPLATE"
+    strip = "FROM $%d   ·   CUSTOM BUILT, NOT A TEMPLATE" % BASE_PRICE
     sf = font(BOLD, 27)
     sw = d.textlength(strip, font=sf)
     x0, x1 = 300, 980

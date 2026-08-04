@@ -8,13 +8,14 @@ Open `index.html`, scroll to the `CONFIG` block near the bottom:
 
 ```js
 const CONFIG = {
-  email: 'rayf24241@gmail.com',
-  demos: [ 'https://...', 'https://...', 'https://...' ]
+  email: 'rayf24241@gmail.com'
 };
 ```
 
-- `email` — where the "Email me" buttons send people.
-- The demo sites live in `barbershop/` and `landscaping/` and are wired up already.
+- `email` — where every "Email me" button sends people. That's the only required edit.
+- The demo sites live in `barbershop/` and `landscaping/`, and the work cards on the
+  home page embed them as **live** previews — real running pages, not screenshots.
+  One deploy publishes all three.
 
 Change the price in two places if you ever raise it: search the file for `$150`.
 
